@@ -1,0 +1,191 @@
+import java.util.Properties
+
+plugins {
+    id 'java'
+}
+
+group = 'org.wurmhighres'
+version = '0.1.24'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+def localProperties = new Properties()
+def localPropertiesFile = file('local.properties')
+if (localPropertiesFile.isFile()) {
+    localPropertiesFile.withInputStream { localProperties.load(it) }
+}
+
+def configuredLibraryDirectory = findProperty('wurmClientLibDir')
+if (configuredLibraryDirectory == null || configuredLibraryDirectory.toString().trim().isEmpty()) {
+    configuredLibraryDirectory = localProperties.getProperty('wurmClientLibDir')
+}
+if (configuredLibraryDirectory == null || configuredLibraryDirectory.toString().trim().isEmpty()) {
+    configuredLibraryDirectory = System.getenv('WURM_CLIENT_LIBS')
+}
+if (configuredLibraryDirectory == null || configuredLibraryDirectory.toString().trim().isEmpty()) {
+    throw new GradleException(
+            'Set wurmClientLibDir in local.properties, a Gradle property, or WURM_CLIENT_LIBS')
+}
+
+def wurmClientLibDir = file(configuredLibraryDirectory.toString())
+def requiredClientLibraries = [
+        'client-patched.jar',
+        'common.jar',
+        'javassist.jar',
+        'modlauncher.jar'
+].collect { new File(wurmClientLibDir, it) }
+
+requiredClientLibraries.each { library ->
+    if (!library.isFile()) {
+        throw new GradleException('Required Wurm client library is missing: ' + library)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly files(requiredClientLibraries)
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation files(requiredClientLibraries)
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    systemProperty 'wurmClientLibDir', wurmClientLibDir.absolutePath
+    systemProperty 'wurmHighresProjectDir', projectDir.absolutePath
+    testLogging {
+        events 'failed'
+        exceptionFormat 'full'
+    }
+}
+
+jar {
+    archiveFileName = "wurm-highres-${project.version}.jar"
+}
+
+task resourcePack(type: Jar) {
+    archiveFileName = "wurm-highres-resources-readable-${project.version}.jar"
+    destinationDirectory = file("${buildDir}/resource-pack")
+    from('resource-pack')
+}
+
+task realisticResourcePack(type: Jar) {
+    archiveFileName = "wurm-highres-resources-realistic-${project.version}.jar"
+    destinationDirectory = file("${buildDir}/resource-pack")
+    from('resource-pack-realistic')
+}
+
+task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
+    doLast {
+        def modContents = zipTree(jar.archiveFile.get().asFile)
+        [
+                'org/wurmhighres/client/WurmHighresMod.class',
+                'org/wurmhighres/client/WurmHighresResources.class',
+                'org/wurmhighres/client/RarityEffects.class',
+                'org/wurmhighres/client/IconOverrides.class',
+                'org/wurmhighres/client/icons/carving-knife.png',
+                'org/wurmhighres/client/icons/prayer-charm.png',
+                'org/wurmhighres/client/icons/large-anvil.png',
+                'org/wurmhighres/client/icons/press.png',
+                'org/wurmhighres/client/icons/small-barrel.png',
+                'org/wurmhighres/client/icons/large-barrel.png',
+                'org/wurmhighres/client/icons/huge-tub.png',
+                'org/wurmhighres/client/icons/huge-oil-barrel.png',
+                'org/wurmhighres/client/icons/wine-barrel.png',
+                'org/wurmhighres/client/icons/smelting-pot.png',
+                'org/wurmhighres/client/icons/branding-iron.png',
+                'org/wurmhighres/client/icons/hide.png',
+                'org/wurmhighres/client/icons/leather.png',
+                'org/wurmhighres/client/icons/drake-hide-black.png',
+                'org/wurmhighres/client/icons/drake-hide-blue.png',
+                'org/wurmhighres/client/icons/drake-hide-green.png',
+                'org/wurmhighres/client/icons/drake-hide-red.png',
+                'org/wurmhighres/client/icons/drake-hide-white.png',
+                'org/wurmhighres/client/icons/dragon-scale-black.png',
+                'org/wurmhighres/client/icons/dragon-scale-blue.png',
+                'org/wurmhighres/client/icons/dragon-scale-green.png',
+                'org/wurmhighres/client/icons/dragon-scale-red.png',
+                'org/wurmhighres/client/icons/dragon-scale-white.png'
+        ].each { requiredClass ->
+            if (modContents.matching { include requiredClass }.files.empty) {
+                throw new GradleException('Mod artifact is missing ' + requiredClass)
+            }
+        }
+
+        [resourcePack, realisticResourcePack].each { packTask ->
+            def packContents = zipTree(packTask.archiveFile.get().asFile)
+            ['mappings.txt', 'gui/misc.png', 'gui/resource.png',
+             'gui/tools.png', 'gui/weapons.png',
+             'gui/custom/carving-knife.png',
+             'gui/custom/prayer-charm.png',
+             'gui/custom/large-anvil.png',
+             'gui/custom/press.png',
+             'gui/custom/small-barrel.png',
+             'gui/custom/large-barrel.png',
+             'gui/custom/huge-tub.png',
+             'gui/custom/huge-oil-barrel.png',
+             'gui/custom/wine-barrel.png',
+             'gui/custom/smelting-pot.png',
+             'gui/custom/branding-iron.png',
+             'gui/custom/hide.png',
+             'gui/custom/leather.png',
+             'gui/custom/drake-hide-black.png',
+             'gui/custom/drake-hide-blue.png',
+             'gui/custom/drake-hide-green.png',
+             'gui/custom/drake-hide-red.png',
+             'gui/custom/drake-hide-white.png',
+             'gui/custom/dragon-scale-black.png',
+             'gui/custom/dragon-scale-blue.png',
+             'gui/custom/dragon-scale-green.png',
+             'gui/custom/dragon-scale-red.png',
+             'gui/custom/dragon-scale-white.png'].each { requiredResource ->
+                if (packContents.matching { include requiredResource }.files.empty) {
+                    throw new GradleException(
+                            packTask.name + ' is missing ' + requiredResource)
+                }
+            }
+        }
+    }
+}
+
+task dist(type: Zip, dependsOn: [test, verifyArtifacts]) {
+    archiveFileName = "wurm-highres-${project.version}.zip"
+    destinationDirectory = file("${buildDir}/distributions")
+
+    into('mods/wurm-highres') {
+        from jar
+        from resourcePack
+        from realisticResourcePack
+    }
+    into('mods') {
+        from 'mods/wurm-highres.properties'
+    }
+}
+
+task publicationZip(type: Zip, dependsOn: [test, verifyArtifacts]) {
+    archiveFileName = "WURM-High-Res-Icons-${project.version}.zip"
+    destinationDirectory = file("${buildDir}/publication")
+
+    into('mods/wurm-highres') {
+        from jar
+        from resourcePack
+        from realisticResourcePack
+    }
+    into('mods') {
+        from 'mods/wurm-highres.properties'
+    }
+}
+
+task releaseAssets(type: Copy, dependsOn: publicationZip) {
+    from publicationZip
+    from 'docs/WURM-High-Res-Icons-before-after.png'
+    into file("${buildDir}/publication")
+}
+
+build.dependsOn verifyArtifacts
