@@ -183,7 +183,6 @@ task publicationZip(type: Zip, dependsOn: [test, verifyArtifacts]) {
 }
 
 task releaseAssets(type: Copy, dependsOn: publicationZip) {
-    from publicationZip
     from 'docs/WURM-High-Res-Icons-before-after.png'
     into file("${buildDir}/publication")
 }
