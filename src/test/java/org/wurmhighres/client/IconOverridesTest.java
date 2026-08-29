@@ -86,6 +86,24 @@ public class IconOverridesTest {
     }
 
     @Test
+    public void anatomyItemsSharingAtlasCellsGetDistinctResources() {
+        assertEquals("img.wurmhighres.twistedhorn", IconOverrides.anatomyResource(
+                (short) 496, "twisted horn"));
+        assertNull(IconOverrides.anatomyResource((short) 496, "horn"));
+        assertNull(IconOverrides.anatomyResource((short) 495, "twisted horn"));
+
+        assertEquals("img.wurmhighres.gland", IconOverrides.anatomyResource(
+                (short) 515, "gland"));
+        assertNull(IconOverrides.anatomyResource((short) 515, "bladder"));
+        assertNull(IconOverrides.anatomyResource((short) 514, "gland"));
+
+        assertTrue(IconOverrides.hasCustomIcon("twisted horn"));
+        assertTrue(IconOverrides.hasCustomIcon("gland"));
+        assertFalse(IconOverrides.hasCustomIcon("horn"));
+        assertFalse(IconOverrides.hasCustomIcon("bladder"));
+    }
+
+    @Test
     public void largeAnvilCanBeSeparatedFromSmallAnvilSharingIcon791() {
         assertTrue(IconOverrides.isLargeAnvil((short) 791, 10.0f, "anvil"));
         assertTrue(IconOverrides.isLargeAnvil((short) 791, 10000.0f, "anvil"));

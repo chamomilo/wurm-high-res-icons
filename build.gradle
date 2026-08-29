@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.wurmhighres'
-version = '0.1.24'
+version = '0.1.25'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -100,6 +100,8 @@ task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
                 'org/wurmhighres/client/icons/wine-barrel.png',
                 'org/wurmhighres/client/icons/smelting-pot.png',
                 'org/wurmhighres/client/icons/branding-iron.png',
+                'org/wurmhighres/client/icons/gland.png',
+                'org/wurmhighres/client/icons/twisted-horn.png',
                 'org/wurmhighres/client/icons/hide.png',
                 'org/wurmhighres/client/icons/leather.png',
                 'org/wurmhighres/client/icons/drake-hide-black.png',
@@ -120,7 +122,7 @@ task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
 
         [resourcePack, realisticResourcePack].each { packTask ->
             def packContents = zipTree(packTask.archiveFile.get().asFile)
-            ['mappings.txt', 'gui/misc.png', 'gui/resource.png',
+            ['mappings.txt', 'gui/misc.png', 'gui/resource.png', 'gui/resource2.png',
              'gui/tools.png', 'gui/weapons.png',
              'gui/custom/carving-knife.png',
              'gui/custom/prayer-charm.png',
@@ -133,6 +135,8 @@ task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
              'gui/custom/wine-barrel.png',
              'gui/custom/smelting-pot.png',
              'gui/custom/branding-iron.png',
+             'gui/custom/gland.png',
+             'gui/custom/twisted-horn.png',
              'gui/custom/hide.png',
              'gui/custom/leather.png',
              'gui/custom/drake-hide-black.png',
@@ -180,11 +184,6 @@ task publicationZip(type: Zip, dependsOn: [test, verifyArtifacts]) {
     into('mods') {
         from 'mods/wurm-highres.properties'
     }
-}
-
-task releaseAssets(type: Copy, dependsOn: publicationZip) {
-    from 'docs/WURM-High-Res-Icons-before-after.png'
-    into file("${buildDir}/publication")
 }
 
 build.dependsOn verifyArtifacts

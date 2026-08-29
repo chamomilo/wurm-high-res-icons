@@ -6,8 +6,8 @@ WURM High-Res Icons is a client-side visual mod for Wurm Unlimited. It replaces 
 
 ## Features
 
-- Detailed 32×32 icons for Inventory, Toolbelt, Equipment and Build/Creation windows.
-- Separate artwork for many items that share one vanilla icon ID, including carving knife / stone chisel, small / large anvil, leather / hide / pelt, pottery bowl / smelting pot, press / fruit press and several barrel types.
+- Detailed 32×32 icons for Inventory, Toolbelt, Equipment and Build/Creation windows, including backpack, bladder, fat, feather, fur, gland, hoof, horn, leather knife, paw, quiver, satchel, tail, tooth, twisted horn and water skin.
+- Separate artwork for many items that share one vanilla icon ID, including carving knife / stone chisel, small / large anvil, leather / hide / pelt, bladder / gland, horn / twisted horn, pottery bowl / smelting pot, press / fruit press and several barrel types.
 - Separate muted-color drake-hide and dragon-scale icons for black, blue, green, red and white dragons.
 - Animated rare, supreme and fantastic highlighting: irregular pulsing blob (default) or rotating five-point star, with an optional white shimmer.
 - Runtime resource packs: the mod does not overwrite `packs/graphics.jar`.
@@ -24,7 +24,7 @@ WURM High-Res Icons is a client-side visual mod for Wurm Unlimited. It replaces 
 Download the latest ZIP from [GitHub Releases](https://github.com/chamomilo/wurm-high-res-icons/releases/latest).
 
 1. Close Wurm Unlimited.
-2. Extract `WURM-High-Res-Icons-0.1.24.zip` into the `WurmLauncher` folder.
+2. Extract `WURM-High-Res-Icons-0.1.25.zip` into the `WurmLauncher` folder.
 3. Keep the included `mods` directory structure.
 4. Start the client through Ago's Client ModLauncher.
 

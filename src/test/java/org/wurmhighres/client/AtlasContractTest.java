@@ -45,16 +45,25 @@ public class AtlasContractTest {
     private static void verifyPack(File project, String packDirectory) throws Exception {
         BufferedImage misc = readAtlas(project, packDirectory, "misc.png", 640, 400);
         BufferedImage resource = readAtlas(project, packDirectory, "resource.png", 640, 384);
+        BufferedImage resource2 = readAtlas(project, packDirectory, "resource2.png", 640, 384);
         BufferedImage tools = readAtlas(project, packDirectory, "tools.png", 640, 384);
         BufferedImage weapons = readAtlas(project, packDirectory, "weapons.png", 640, 400);
 
-        assertCellVisible(misc, 282);
+        int[] miscIds = {240, 241, 242, 282};
+        for (int id : miscIds) {
+            assertCellVisible(misc, id);
+        }
         assertCellVisible(resource, 520);
         assertCellVisible(resource, 602);
         assertCellVisible(resource, 621);
+        int[] anatomyIds = {495, 496, 498, 514, 515, 534, 535, 603};
+        for (int id : anatomyIds) {
+            assertCellVisible(resource, id);
+        }
+        assertCellVisible(resource2, 1489);
 
         int[] toolIds = {738, 741, 742, 743, 745, 746, 747, 749, 750, 752,
-                754, 755, 780, 802, 803, 882, 902};
+                754, 755, 760, 766, 780, 802, 803, 882, 902};
         for (int id : toolIds) {
             assertCellVisible(tools, id);
         }
@@ -63,6 +72,7 @@ public class AtlasContractTest {
         assertCellVisible(weapons, 1207);
 
         String[] customMaterials = {
+                "gland.png", "twisted-horn.png",
                 "hide.png", "leather.png",
                 "drake-hide-black.png", "drake-hide-blue.png",
                 "drake-hide-green.png", "drake-hide-red.png",

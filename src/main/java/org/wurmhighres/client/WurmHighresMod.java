@@ -52,7 +52,7 @@ public final class WurmHighresMod implements WurmClientMod, Configurable, PreIni
 
     @Override
     public void init() {
-        LOGGER.info("wurm-highres 0.1.24 initialized; iconStyle="
+        LOGGER.info("wurm-highres 0.1.25 initialized; iconStyle="
                 + WurmHighresSettings.iconStyle);
     }
 

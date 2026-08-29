@@ -28,6 +28,8 @@ public final class IconOverrides {
     private static final String WINE_BARREL_RESOURCE = "img.wurmhighres.winebarrel";
     private static final String SMELTING_POT_RESOURCE = "img.wurmhighres.smeltingpot";
     private static final String BRANDING_IRON_RESOURCE = "img.wurmhighres.brandingiron";
+    private static final String GLAND_RESOURCE = "img.wurmhighres.gland";
+    private static final String TWISTED_HORN_RESOURCE = "img.wurmhighres.twistedhorn";
     private static final String HIDE_RESOURCE = "img.wurmhighres.hide";
     private static final String LEATHER_RESOURCE = "img.wurmhighres.leather";
     private static final String DRAKE_HIDE_RESOURCE_PREFIX = "img.wurmhighres.drakehide.";
@@ -39,6 +41,8 @@ public final class IconOverrides {
     private static final short SHARED_BARREL_ICON_ID = 245;
     private static final short POTTERY_BOWL_SMELTING_POT_ICON_ID = 511;
     private static final short PLIERS_BRANDING_IRON_ICON_ID = 780;
+    private static final short HORN_TWISTED_HORN_ICON_ID = 496;
+    private static final short BLADDER_GLAND_ICON_ID = 515;
 
     private static final Map<String, Texture> ICON_CACHE =
             new ConcurrentHashMap<String, Texture>();
@@ -60,6 +64,10 @@ public final class IconOverrides {
         }
         if (isBrandingIron(item.getType(), itemDescriptor(item))) {
             return icon(BRANDING_IRON_RESOURCE, original);
+        }
+        String anatomyResource = anatomyResource(item.getType(), itemDescriptor(item));
+        if (anatomyResource != null) {
+            return icon(anatomyResource, original);
         }
         String containerResource = containerResource(
                 item.getType(), itemDescriptor(item), item.getWeight());
@@ -98,6 +106,10 @@ public final class IconOverrides {
         if (isBrandingIron(PLIERS_BRANDING_IRON_ICON_ID, name)) {
             return icon(BRANDING_IRON_RESOURCE, original);
         }
+        String anatomyResource = anatomyResourceFromName(name);
+        if (anatomyResource != null) {
+            return icon(anatomyResource, original);
+        }
         String containerResource = containerResource(SHARED_BARREL_ICON_ID, name, 0.0f);
         if (containerResource != null) {
             return icon(containerResource, original);
@@ -130,6 +142,11 @@ public final class IconOverrides {
         if (isBrandingIron(iconId, name + " " + groundDescriptor(groundItemId))) {
             return icon(BRANDING_IRON_RESOURCE, original);
         }
+        String anatomyResource = anatomyResource(
+                iconId, name + " " + groundDescriptor(groundItemId));
+        if (anatomyResource != null) {
+            return icon(anatomyResource, original);
+        }
         String containerResource = containerResource(
                 iconId, name + " " + groundDescriptor(groundItemId), 0.0f);
         if (containerResource != null) {
@@ -150,6 +167,7 @@ public final class IconOverrides {
                 || isPress(baseName)
                 || isSmeltingPot(POTTERY_BOWL_SMELTING_POT_ICON_ID, baseName)
                 || isBrandingIron(PLIERS_BRANDING_IRON_ICON_ID, baseName)
+                || anatomyResourceFromName(baseName) != null
                 || containerResource(SHARED_BARREL_ICON_ID, baseName, 0.0f) != null
                 || materialResourceFromName(baseName) != null;
     }
@@ -205,6 +223,33 @@ public final class IconOverrides {
         String normalized = normalize(descriptor).replace('.', ' ').replace('_', ' ');
         return normalized.contains("branding iron")
                 || normalized.contains("brandingiron");
+    }
+
+    static String anatomyResource(short iconId, String descriptor) {
+        String normalized = normalize(descriptor).replace('.', ' ').replace('_', ' ');
+        if (iconId == HORN_TWISTED_HORN_ICON_ID && normalized.contains("twisted horn")) {
+            return TWISTED_HORN_RESOURCE;
+        }
+        if (iconId == BLADDER_GLAND_ICON_ID && containsWord(normalized, "gland")) {
+            return GLAND_RESOURCE;
+        }
+        return null;
+    }
+
+    private static String anatomyResourceFromName(String name) {
+        String normalized = normalize(name).replace('.', ' ').replace('_', ' ');
+        if (normalized.equals("twisted horn")
+                || normalized.startsWith("twisted horn,")
+                || normalized.startsWith("twisted horn (")) {
+            return TWISTED_HORN_RESOURCE;
+        }
+        if (normalized.equals("gland")
+                || normalized.equals("glands")
+                || normalized.startsWith("gland,")
+                || normalized.startsWith("gland (")) {
+            return GLAND_RESOURCE;
+        }
+        return null;
     }
 
     static String materialResource(short iconId, String name, float r, float g, float b) {

@@ -1,5 +1,6 @@
 img.iconsheet.misc = gui/misc.png
 img.iconsheet.resource = gui/resource.png
+img.iconsheet.resource2 = gui/resource2.png
 img.iconsheet.tools = gui/tools.png
 img.iconsheet.weapons = gui/weapons.png
 img.wurmhighres.carvingknife = gui/custom/carving-knife.png
@@ -13,6 +14,8 @@ img.wurmhighres.hugeoilbarrel = gui/custom/huge-oil-barrel.png
 img.wurmhighres.winebarrel = gui/custom/wine-barrel.png
 img.wurmhighres.smeltingpot = gui/custom/smelting-pot.png
 img.wurmhighres.brandingiron = gui/custom/branding-iron.png
+img.wurmhighres.gland = gui/custom/gland.png
+img.wurmhighres.twistedhorn = gui/custom/twisted-horn.png
 img.wurmhighres.hide = gui/custom/hide.png
 img.wurmhighres.leather = gui/custom/leather.png
 img.wurmhighres.drakehide.black = gui/custom/drake-hide-black.png
