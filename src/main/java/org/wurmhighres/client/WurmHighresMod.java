@@ -41,6 +41,10 @@ public final class WurmHighresMod implements WurmClientMod, Configurable, PreIni
             if (WurmHighresSettings.rarityGlow || WurmHighresSettings.rarityBackground) {
                 installInventoryHooks(pool);
                 installToolbeltHooks(pool);
+            }
+            if (WurmHighresSettings.rarityGlow
+                    || WurmHighresSettings.rarityBackground
+                    || (WurmHighresSettings.replaceIcons && WurmHighresSettings.magicShimmer)) {
                 installPaperDollHook(pool);
             }
             LOGGER.info("wurm-highres bytecode hooks installed");
@@ -52,7 +56,7 @@ public final class WurmHighresMod implements WurmClientMod, Configurable, PreIni
 
     @Override
     public void init() {
-        LOGGER.info("wurm-highres 0.1.25 initialized; iconStyle="
+        LOGGER.info("wurm-highres 0.1.26 initialized; iconStyle="
                 + WurmHighresSettings.iconStyle);
     }
 
@@ -135,7 +139,8 @@ public final class WurmHighresMod implements WurmClientMod, Configurable, PreIni
     private static void installPaperDollHook(ClassPool pool) throws Exception {
         CtClass paperDoll = pool.get("com.wurmonline.client.renderer.gui.PaperDollItem");
         method(paperDoll, "render", "(Lcom/wurmonline/client/renderer/backend/Queue;FFFF)V")
-                .insertBefore("org.wurmhighres.client.RarityEffects.renderPaperDoll(this, $1);");
+                .insertBefore("{ org.wurmhighres.client.MagicEffects.animatePaperDoll(this); "
+                        + "org.wurmhighres.client.RarityEffects.renderPaperDoll(this, $1); }");
     }
 
     private static CtMethod method(CtClass type, String name, String descriptor) throws NotFoundException {

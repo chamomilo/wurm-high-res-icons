@@ -6,6 +6,8 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class WurmHighresSettingsTest {
     @Test
@@ -66,5 +68,18 @@ public class WurmHighresSettingsTest {
         invalid.setProperty("rarityAnimation", "hexagon");
         WurmHighresSettings.configure(invalid);
         assertEquals("blob", WurmHighresSettings.rarityAnimation);
+    }
+
+    @Test
+    public void magicalShimmerCanBeDisabledIndependentlyOfRarityEffects() {
+        Properties disabled = new Properties();
+        disabled.setProperty("magicShimmer", "false");
+        WurmHighresSettings.configure(disabled);
+        assertFalse(WurmHighresSettings.magicShimmer);
+
+        Properties enabled = new Properties();
+        enabled.setProperty("magicShimmer", "true");
+        WurmHighresSettings.configure(enabled);
+        assertTrue(WurmHighresSettings.magicShimmer);
     }
 }

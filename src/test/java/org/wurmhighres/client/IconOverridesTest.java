@@ -33,6 +33,26 @@ public class IconOverridesTest {
     }
 
     @Test
+    public void magicalContainersGetDedicatedPrismaticTextures() {
+        assertEquals(IconOverrides.MAGIC_WATER_SKIN_RESOURCE,
+                IconOverrides.magicalContainerResource("magic water skin"));
+        assertEquals(IconOverrides.MAGIC_WATER_SKIN_RESOURCE,
+                IconOverrides.magicalContainerResource("Magical waterskins, leather"));
+        assertEquals(IconOverrides.SANTA_SACK_RESOURCE,
+                IconOverrides.magicalContainerResource("Santa's sack"));
+        assertEquals(IconOverrides.SANTA_SACK_RESOURCE,
+                IconOverrides.magicalContainerResource("Christmas sacks (gift)"));
+        assertTrue(IconOverrides.hasCustomIcon("magic waterskin"));
+        assertTrue(IconOverrides.hasCustomIcon("Santa’s sack"));
+
+        assertNull(IconOverrides.magicalContainerResource("water skin"));
+        assertNull(IconOverrides.magicalContainerResource("nonmagic water skin"));
+        assertNull(IconOverrides.magicalContainerResource("satchel"));
+        assertNull(IconOverrides.magicalContainerResource("backpack"));
+        assertNull(IconOverrides.magicalContainerResource("quiver"));
+    }
+
+    @Test
     public void pressIsSeparatedFromFruitPressSharingIcon246() {
         assertTrue(IconOverrides.hasCustomIcon("press"));
         assertTrue(IconOverrides.hasCustomIcon("press, oakenwood"));

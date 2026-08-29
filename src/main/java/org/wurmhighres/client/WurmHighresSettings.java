@@ -9,14 +9,15 @@ final class WurmHighresSettings {
     private static final String DEFAULT_ICON_STYLE = "realistic";
     private static final String DEFAULT_RARITY_ANIMATION = "blob";
     private static final String DEFAULT_READABLE_PACK =
-            "mods/wurm-highres/wurm-highres-resources-readable-0.1.24.jar";
+            "mods/wurm-highres/wurm-highres-resources-readable-0.1.26.jar";
     private static final String DEFAULT_REALISTIC_PACK =
-            "mods/wurm-highres/wurm-highres-resources-realistic-0.1.24.jar";
+            "mods/wurm-highres/wurm-highres-resources-realistic-0.1.26.jar";
 
     static volatile boolean replaceIcons = true;
     static volatile boolean rarityGlow = true;
     static volatile boolean rarityBackground = false;
     static volatile boolean pulseGlow = true;
+    static volatile boolean magicShimmer = true;
     static volatile String rarityAnimation = DEFAULT_RARITY_ANIMATION;
     static volatile int glowRadius = 3;
     static volatile float glowAlpha = 0.48f;
@@ -38,6 +39,7 @@ final class WurmHighresSettings {
         rarityGlow = bool(properties, "rarityGlow", rarityGlow);
         rarityBackground = bool(properties, "rarityBackground", rarityBackground);
         pulseGlow = bool(properties, "pulseGlow", pulseGlow);
+        magicShimmer = bool(properties, "magicShimmer", magicShimmer);
         rarityAnimation = rarityAnimation(properties.getProperty(
                 "rarityAnimation", DEFAULT_RARITY_ANIMATION));
         glowRadius = integer(properties, "glowRadius", glowRadius, 1, 4);

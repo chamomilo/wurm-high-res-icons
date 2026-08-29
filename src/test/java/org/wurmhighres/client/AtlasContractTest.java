@@ -72,6 +72,7 @@ public class AtlasContractTest {
         assertCellVisible(weapons, 1207);
 
         String[] customMaterials = {
+                "magic-water-skin.png", "santa-sack.png",
                 "gland.png", "twisted-horn.png",
                 "hide.png", "leather.png",
                 "drake-hide-black.png", "drake-hide-blue.png",

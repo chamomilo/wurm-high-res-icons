@@ -15,6 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /** Provides separate client-only icons for items that share a stock atlas ID. */
 public final class IconOverrides {
+    static final String MAGIC_WATER_SKIN_RESOURCE = "img.wurmhighres.magicwaterskin";
+    static final String SANTA_SACK_RESOURCE = "img.wurmhighres.santasack";
     private static final String CARVING_KNIFE_NAME = "carving knife";
     private static final String CARVING_KNIFE_RESOURCE = "img.wurmhighres.carvingknife";
     private static final String PRAYER_CHARM_NAME = "prayer charm";
@@ -55,22 +57,27 @@ public final class IconOverrides {
         if (!WurmHighresSettings.replaceIcons || item == null) {
             return original;
         }
+        String descriptor = itemDescriptor(item);
+        String magicalResource = magicalContainerResource(descriptor);
+        if (magicalResource != null) {
+            return icon(magicalResource, original);
+        }
         String baseName = item.getBaseName();
         if (isLargeAnvil(item.getType(), item.getWeight(), baseName)) {
             return icon(LARGE_ANVIL_RESOURCE, original);
         }
-        if (isSmeltingPot(item.getType(), itemDescriptor(item))) {
+        if (isSmeltingPot(item.getType(), descriptor)) {
             return icon(SMELTING_POT_RESOURCE, original);
         }
-        if (isBrandingIron(item.getType(), itemDescriptor(item))) {
+        if (isBrandingIron(item.getType(), descriptor)) {
             return icon(BRANDING_IRON_RESOURCE, original);
         }
-        String anatomyResource = anatomyResource(item.getType(), itemDescriptor(item));
+        String anatomyResource = anatomyResource(item.getType(), descriptor);
         if (anatomyResource != null) {
             return icon(anatomyResource, original);
         }
         String containerResource = containerResource(
-                item.getType(), itemDescriptor(item), item.getWeight());
+                item.getType(), descriptor, item.getWeight());
         if (containerResource != null) {
             return icon(containerResource, original);
         }
@@ -96,6 +103,10 @@ public final class IconOverrides {
     public static Texture overrideByName(String name, Texture original) {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
+        }
+        String magicalResource = magicalContainerResource(name);
+        if (magicalResource != null) {
+            return icon(magicalResource, original);
         }
         if (isLargeAnvilName(name)) {
             return icon(LARGE_ANVIL_RESOURCE, original);
@@ -133,22 +144,27 @@ public final class IconOverrides {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
         }
+        String descriptor = name + " " + groundDescriptor(groundItemId);
+        String magicalResource = magicalContainerResource(descriptor);
+        if (magicalResource != null) {
+            return icon(magicalResource, original);
+        }
         if (isLargeAnvil(iconId, 0.0f, name)) {
             return icon(LARGE_ANVIL_RESOURCE, original);
         }
-        if (isSmeltingPot(iconId, name + " " + groundDescriptor(groundItemId))) {
+        if (isSmeltingPot(iconId, descriptor)) {
             return icon(SMELTING_POT_RESOURCE, original);
         }
-        if (isBrandingIron(iconId, name + " " + groundDescriptor(groundItemId))) {
+        if (isBrandingIron(iconId, descriptor)) {
             return icon(BRANDING_IRON_RESOURCE, original);
         }
         String anatomyResource = anatomyResource(
-                iconId, name + " " + groundDescriptor(groundItemId));
+                iconId, descriptor);
         if (anatomyResource != null) {
             return icon(anatomyResource, original);
         }
         String containerResource = containerResource(
-                iconId, name + " " + groundDescriptor(groundItemId), 0.0f);
+                iconId, descriptor, 0.0f);
         if (containerResource != null) {
             return icon(containerResource, original);
         }
@@ -162,7 +178,8 @@ public final class IconOverrides {
     }
 
     static boolean hasCustomIcon(String baseName) {
-        return isCarvingKnife(baseName)
+        return magicalContainerResource(baseName) != null
+                || isCarvingKnife(baseName)
                 || isPrayerCharm(baseName)
                 || isPress(baseName)
                 || isSmeltingPot(POTTERY_BOWL_SMELTING_POT_ICON_ID, baseName)
@@ -170,6 +187,31 @@ public final class IconOverrides {
                 || anatomyResourceFromName(baseName) != null
                 || containerResource(SHARED_BARREL_ICON_ID, baseName, 0.0f) != null
                 || materialResourceFromName(baseName) != null;
+    }
+
+    static String magicalContainerResource(String descriptor) {
+        String normalized = normalize(descriptor).replace('\u2019', '\'');
+        if (containsPhrase(normalized, "magic water skin")
+                || containsPhrase(normalized, "magic water skins")
+                || containsPhrase(normalized, "magical water skin")
+                || containsPhrase(normalized, "magical water skins")
+                || containsPhrase(normalized, "magic waterskin")
+                || containsPhrase(normalized, "magic waterskins")
+                || containsPhrase(normalized, "magical waterskin")
+                || containsPhrase(normalized, "magical waterskins")) {
+            return MAGIC_WATER_SKIN_RESOURCE;
+        }
+        if (containsPhrase(normalized, "santa sack")
+                || containsPhrase(normalized, "santa sacks")
+                || containsPhrase(normalized, "santa's sack")
+                || containsPhrase(normalized, "santa's sacks")
+                || containsPhrase(normalized, "santas sack")
+                || containsPhrase(normalized, "santas sacks")
+                || containsPhrase(normalized, "christmas sack")
+                || containsPhrase(normalized, "christmas sacks")) {
+            return SANTA_SACK_RESOURCE;
+        }
+        return null;
     }
 
     static String containerResource(short iconId, String name, float weight) {
@@ -369,6 +411,26 @@ public final class IconOverrides {
                 || value.contains(" " + word + " (");
     }
 
+    private static boolean containsPhrase(String value, String phrase) {
+        int fromIndex = 0;
+        while (fromIndex <= value.length() - phrase.length()) {
+            int index = value.indexOf(phrase, fromIndex);
+            if (index < 0) {
+                return false;
+            }
+            int after = index + phrase.length();
+            boolean beginsAtBoundary = index == 0
+                    || !Character.isLetterOrDigit(value.charAt(index - 1));
+            boolean endsAtBoundary = after == value.length()
+                    || !Character.isLetterOrDigit(value.charAt(after));
+            if (beginsAtBoundary && endsAtBoundary) {
+                return true;
+            }
+            fromIndex = index + 1;
+        }
+        return false;
+    }
+
     private static float[] groundColour(long groundItemId) {
         GroundItemData data = groundItemData(groundItemId);
         return data == null ? null : new float[]{data.getR(), data.getG(), data.getB()};
@@ -413,7 +475,7 @@ public final class IconOverrides {
         }
     }
 
-    private static String itemDescriptor(InventoryMetaItem item) {
+    static String itemDescriptor(InventoryMetaItem item) {
         return item.getBaseName() + " " + item.getDisplayName() + " "
                 + item.getGroupName() + " " + item.getHoverText() + " "
                 + item.getCustomName();
@@ -441,6 +503,12 @@ public final class IconOverrides {
     }
 
     private static Texture icon(String resource, Texture original) {
+        if (MagicEffects.supports(resource) && WurmHighresSettings.magicShimmer) {
+            Texture animated = MagicEffects.icon(resource, original);
+            if (animated != null && animated != original) {
+                return animated;
+            }
+        }
         Texture texture = ICON_CACHE.get(resource);
         if (texture == null) {
             synchronized (ICON_CACHE) {

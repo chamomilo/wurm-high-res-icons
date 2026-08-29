@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.wurmhighres'
-version = '0.1.25'
+version = '0.1.26'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -88,6 +88,7 @@ task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
                 'org/wurmhighres/client/WurmHighresMod.class',
                 'org/wurmhighres/client/WurmHighresResources.class',
                 'org/wurmhighres/client/RarityEffects.class',
+                'org/wurmhighres/client/MagicEffects.class',
                 'org/wurmhighres/client/IconOverrides.class',
                 'org/wurmhighres/client/icons/carving-knife.png',
                 'org/wurmhighres/client/icons/prayer-charm.png',
@@ -113,7 +114,9 @@ task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
                 'org/wurmhighres/client/icons/dragon-scale-blue.png',
                 'org/wurmhighres/client/icons/dragon-scale-green.png',
                 'org/wurmhighres/client/icons/dragon-scale-red.png',
-                'org/wurmhighres/client/icons/dragon-scale-white.png'
+                'org/wurmhighres/client/icons/dragon-scale-white.png',
+                'org/wurmhighres/client/icons/magic-water-skin.png',
+                'org/wurmhighres/client/icons/santa-sack.png'
         ].each { requiredClass ->
             if (modContents.matching { include requiredClass }.files.empty) {
                 throw new GradleException('Mod artifact is missing ' + requiredClass)
@@ -148,7 +151,9 @@ task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
              'gui/custom/dragon-scale-blue.png',
              'gui/custom/dragon-scale-green.png',
              'gui/custom/dragon-scale-red.png',
-             'gui/custom/dragon-scale-white.png'].each { requiredResource ->
+             'gui/custom/dragon-scale-white.png',
+             'gui/custom/magic-water-skin.png',
+             'gui/custom/santa-sack.png'].each { requiredResource ->
                 if (packContents.matching { include requiredResource }.files.empty) {
                     throw new GradleException(
                             packTask.name + ' is missing ' + requiredResource)

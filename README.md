@@ -10,6 +10,7 @@ WURM High-Res Icons is a client-side visual mod for Wurm Unlimited. It replaces 
 - Separate artwork for many items that share one vanilla icon ID, including carving knife / stone chisel, small / large anvil, leather / hide / pelt, bladder / gland, horn / twisted horn, pottery bowl / smelting pot, press / fruit press and several barrel types.
 - Separate muted-color drake-hide and dragon-scale icons for black, blue, green, red and white dragons.
 - Animated rare, supreme and fantastic highlighting: irregular pulsing blob (default) or rotating five-point star, with an optional white shimmer.
+- Magic water skins and Santa sacks have their own animated diamond-like rainbow refraction and a moving sunlight glint (`magicShimmer=true`).
 - Runtime resource packs: the mod does not overwrite `packs/graphics.jar`.
 - Visual compatibility with Smart Improve and Archaeology Identify. The mod does not alter item template IDs, improve logic or archaeology data.
 
@@ -24,7 +25,7 @@ WURM High-Res Icons is a client-side visual mod for Wurm Unlimited. It replaces 
 Download the latest ZIP from [GitHub Releases](https://github.com/chamomilo/wurm-high-res-icons/releases/latest).
 
 1. Close Wurm Unlimited.
-2. Extract `WURM-High-Res-Icons-0.1.25.zip` into the `WurmLauncher` folder.
+2. Extract `WURM-High-Res-Icons-0.1.26.zip` into the `WurmLauncher` folder.
 3. Keep the included `mods` directory structure.
 4. Start the client through Ago's Client ModLauncher.
 

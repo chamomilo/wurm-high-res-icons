@@ -28,3 +28,5 @@ img.wurmhighres.dragonscale.blue = gui/custom/dragon-scale-blue.png
 img.wurmhighres.dragonscale.green = gui/custom/dragon-scale-green.png
 img.wurmhighres.dragonscale.red = gui/custom/dragon-scale-red.png
 img.wurmhighres.dragonscale.white = gui/custom/dragon-scale-white.png
+img.wurmhighres.magicwaterskin = gui/custom/magic-water-skin.png
+img.wurmhighres.santasack = gui/custom/santa-sack.png
