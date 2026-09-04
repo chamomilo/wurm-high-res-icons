@@ -56,8 +56,7 @@ public final class WurmHighresMod implements WurmClientMod, Configurable, PreIni
 
     @Override
     public void init() {
-        LOGGER.info("wurm-highres 0.1.26 initialized; iconStyle="
-                + WurmHighresSettings.iconStyle);
+        LOGGER.info("wurm-highres 0.1.30 initialized");
     }
 
     private static void installResourcePackHook(ClassPool pool) throws Exception {
@@ -95,13 +94,13 @@ public final class WurmHighresMod implements WurmClientMod, Configurable, PreIni
                 "com.wurmonline.client.renderer.gui.CreationListItem");
         creationListItem.getDeclaredMethod("getIcon").insertAfter(
                 "{ $_ = org.wurmhighres.client.IconOverrides.overrideByName("
-                        + "this.getName(), $_); }");
+                        + "this.iconId, this.getName(), $_); }");
 
         CtClass creationTreeItem = pool.get(
                 "com.wurmonline.client.renderer.gui.CreationItemTreeLisItem");
         creationTreeItem.getDeclaredMethod("getIcon").insertAfter(
                 "{ $_ = org.wurmhighres.client.IconOverrides.overrideByName("
-                        + "this.getName(), $_); }");
+                        + "this.iconId, this.getName(), $_); }");
     }
 
     private static void installItemIconHooks(ClassPool pool) throws Exception {

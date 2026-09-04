@@ -6,12 +6,9 @@ import java.util.logging.Logger;
 
 final class WurmHighresSettings {
     private static final Logger LOGGER = Logger.getLogger(WurmHighresSettings.class.getName());
-    private static final String DEFAULT_ICON_STYLE = "realistic";
     private static final String DEFAULT_RARITY_ANIMATION = "blob";
-    private static final String DEFAULT_READABLE_PACK =
-            "mods/wurm-highres/wurm-highres-resources-readable-0.1.26.jar";
-    private static final String DEFAULT_REALISTIC_PACK =
-            "mods/wurm-highres/wurm-highres-resources-realistic-0.1.26.jar";
+    private static final String DEFAULT_RESOURCE_PACK =
+            "mods/wurm-highres/wurm-highres-resources-0.1.30.jar";
 
     static volatile boolean replaceIcons = true;
     static volatile boolean rarityGlow = true;
@@ -22,10 +19,7 @@ final class WurmHighresSettings {
     static volatile int glowRadius = 3;
     static volatile float glowAlpha = 0.48f;
     static volatile float backgroundAlpha = 0.16f;
-    static volatile String iconStyle = DEFAULT_ICON_STYLE;
-    static volatile String readableResourcePack = DEFAULT_READABLE_PACK;
-    static volatile String realisticResourcePack = DEFAULT_REALISTIC_PACK;
-    static volatile String resourcePack = DEFAULT_READABLE_PACK;
+    static volatile String resourcePack = DEFAULT_RESOURCE_PACK;
 
     private static volatile float[] rareColor = rgb(66, 153, 224);
     private static volatile float[] supremeColor = rgb(0, 255, 255);
@@ -45,13 +39,7 @@ final class WurmHighresSettings {
         glowRadius = integer(properties, "glowRadius", glowRadius, 1, 4);
         glowAlpha = decimal(properties, "glowAlpha", glowAlpha, 0.0f, 1.0f);
         backgroundAlpha = decimal(properties, "backgroundAlpha", backgroundAlpha, 0.0f, 1.0f);
-        iconStyle = iconStyle(properties.getProperty("iconStyle", DEFAULT_ICON_STYLE));
-        readableResourcePack = string(properties, "readableResourcePack", DEFAULT_READABLE_PACK);
-        realisticResourcePack = string(properties, "realisticResourcePack", DEFAULT_REALISTIC_PACK);
-        String override = properties.getProperty("resourcePack");
-        resourcePack = override == null || override.trim().isEmpty()
-                ? selectedResourcePack()
-                : override.trim();
+        resourcePack = string(properties, "resourcePack", DEFAULT_RESOURCE_PACK);
         rareColor = color(properties, "rareColor", rareColor);
         supremeColor = color(properties, "supremeColor", supremeColor);
         fantasticColor = color(properties, "fantasticColor", fantasticColor);
@@ -73,19 +61,6 @@ final class WurmHighresSettings {
                 return null;
         }
         return new float[] {source[0], source[1], source[2]};
-    }
-
-    static String selectedResourcePack() {
-        return "realistic".equals(iconStyle) ? realisticResourcePack : readableResourcePack;
-    }
-
-    private static String iconStyle(String value) {
-        String normalized = value == null ? DEFAULT_ICON_STYLE : value.trim().toLowerCase(Locale.ROOT);
-        if ("readable".equals(normalized) || "realistic".equals(normalized)) {
-            return normalized;
-        }
-        LOGGER.warning("Invalid iconStyle '" + value + "'; using " + DEFAULT_ICON_STYLE);
-        return DEFAULT_ICON_STYLE;
     }
 
     private static String rarityAnimation(String value) {

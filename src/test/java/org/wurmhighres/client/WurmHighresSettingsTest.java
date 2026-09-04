@@ -37,24 +37,12 @@ public class WurmHighresSettingsTest {
     }
 
     @Test
-    public void selectsResourcePackFromIconStyle() {
-        Properties realistic = new Properties();
-        realistic.setProperty("iconStyle", "REALISTIC");
-        realistic.setProperty("readableResourcePack", "readable.jar");
-        realistic.setProperty("realisticResourcePack", "realistic.jar");
-        WurmHighresSettings.configure(realistic);
+    public void acceptsSingleResourcePackOverride() {
+        Properties properties = new Properties();
+        properties.setProperty("resourcePack", "custom.jar");
+        WurmHighresSettings.configure(properties);
 
-        assertEquals("realistic", WurmHighresSettings.iconStyle);
-        assertEquals("realistic.jar", WurmHighresSettings.resourcePack);
-
-        Properties invalid = new Properties();
-        invalid.setProperty("iconStyle", "unknown");
-        invalid.setProperty("readableResourcePack", "readable.jar");
-        invalid.setProperty("realisticResourcePack", "realistic.jar");
-        WurmHighresSettings.configure(invalid);
-
-        assertEquals("realistic", WurmHighresSettings.iconStyle);
-        assertEquals("realistic.jar", WurmHighresSettings.resourcePack);
+        assertEquals("custom.jar", WurmHighresSettings.resourcePack);
     }
 
     @Test

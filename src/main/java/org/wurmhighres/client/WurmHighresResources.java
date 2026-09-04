@@ -39,8 +39,7 @@ public final class WurmHighresResources {
                     ModPacks.Options.NOMAPS,
                     ModPacks.Options.NOARMOR);
             if (loaded) {
-                LOGGER.info("Loaded wurm-highres " + WurmHighresSettings.iconStyle
-                        + " resource pack: " + pack);
+                LOGGER.info("Loaded wurm-highres resource pack: " + pack);
             } else {
                 LOGGER.warning("ModLoader did not add the wurm-highres resource pack: " + pack);
             }

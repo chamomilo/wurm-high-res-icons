@@ -32,6 +32,12 @@ public class ClientContractTest {
         assertNotNull(resourceTextureLoader.getDeclaredMethod(
                 "getNearestTextureNonScaling"));
 
+        CtClass itemColors = pool.get("com.wurmonline.client.renderer.ItemColorsXml");
+        assertNotNull(itemColors.getDeclaredMethod("findItemColor"));
+        CtClass imageTextureLoader = pool.get(
+                "com.wurmonline.client.resources.textures.ImageTextureLoader");
+        assertNotNull(imageTextureLoader.getDeclaredMethod("loadNowrapNearestTexture"));
+
         CtClass treePanel = pool.get("com.wurmonline.client.renderer.gui.WurmTreeList$TreeListPanel");
         assertNotNull(treePanel.getMethod("renderComponent",
                 "(Lcom/wurmonline/client/renderer/backend/Queue;F)V"));

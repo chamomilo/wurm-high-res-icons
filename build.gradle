@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.wurmhighres'
-version = '0.1.26'
+version = '0.1.30'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -70,18 +70,12 @@ jar {
 }
 
 task resourcePack(type: Jar) {
-    archiveFileName = "wurm-highres-resources-readable-${project.version}.jar"
+    archiveFileName = "wurm-highres-resources-${project.version}.jar"
     destinationDirectory = file("${buildDir}/resource-pack")
     from('resource-pack')
 }
 
-task realisticResourcePack(type: Jar) {
-    archiveFileName = "wurm-highres-resources-realistic-${project.version}.jar"
-    destinationDirectory = file("${buildDir}/resource-pack")
-    from('resource-pack-realistic')
-}
-
-task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
+task verifyArtifacts(dependsOn: [jar, resourcePack]) {
     doLast {
         def modContents = zipTree(jar.archiveFile.get().asFile)
         [
@@ -90,6 +84,8 @@ task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
                 'org/wurmhighres/client/RarityEffects.class',
                 'org/wurmhighres/client/MagicEffects.class',
                 'org/wurmhighres/client/IconOverrides.class',
+                'org/wurmhighres/client/MaterialIcons.class',
+                'org/wurmhighres/client/ShieldIcons.class',
                 'org/wurmhighres/client/icons/carving-knife.png',
                 'org/wurmhighres/client/icons/prayer-charm.png',
                 'org/wurmhighres/client/icons/large-anvil.png',
@@ -116,16 +112,79 @@ task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
                 'org/wurmhighres/client/icons/dragon-scale-red.png',
                 'org/wurmhighres/client/icons/dragon-scale-white.png',
                 'org/wurmhighres/client/icons/magic-water-skin.png',
-                'org/wurmhighres/client/icons/santa-sack.png'
+                'org/wurmhighres/client/icons/santa-sack.png',
+                'org/wurmhighres/client/icons/shield-small-wood.png',
+                'org/wurmhighres/client/icons/shield-small-wood-mask.png',
+                'org/wurmhighres/client/icons/shield-medium-wood.png',
+                'org/wurmhighres/client/icons/shield-medium-wood-mask.png',
+                'org/wurmhighres/client/icons/shield-large-wood.png',
+                'org/wurmhighres/client/icons/shield-large-wood-mask.png',
+                'org/wurmhighres/client/icons/shield-small-metal.png',
+                'org/wurmhighres/client/icons/shield-small-metal-mask.png',
+                'org/wurmhighres/client/icons/shield-medium-metal.png',
+                'org/wurmhighres/client/icons/shield-medium-metal-mask.png',
+                'org/wurmhighres/client/icons/shield-large-metal.png',
+                'org/wurmhighres/client/icons/shield-large-metal-mask.png'
         ].each { requiredClass ->
             if (modContents.matching { include requiredClass }.files.empty) {
                 throw new GradleException('Mod artifact is missing ' + requiredClass)
             }
         }
 
-        [resourcePack, realisticResourcePack].each { packTask ->
+        def materialIconSlugs = [
+                'praying-statuette',
+                'chain',
+                'butchering-knife',
+                'fork',
+                'spoon',
+                'awl',
+                'clay-shaper',
+                'metal-brush',
+                'grooming-brush',
+                'knife',
+                'stone-chisel',
+                'crowbar',
+                'mallet',
+                'hammer',
+                'pickaxe',
+                'rake',
+                'shovel',
+                'saw',
+                'scissors',
+                'file',
+                'trowel',
+                'sickle',
+                'pliers',
+                'spindle',
+                'small-anvil',
+                'spatula',
+                'steel-and-flint',
+                'fruit-press',
+                'bee-smoker',
+                'cheese-drill',
+                'small-bucket',
+                'needle',
+                'compass',
+                'lantern',
+                'spyglass',
+                'rope-tool',
+                'hatchet',
+                'branding-iron',
+                'smelting-pot',
+                'small-barrel',
+                'large-barrel',
+                'huge-tub',
+                'huge-oil-barrel',
+                'wine-barrel',
+                'press',
+                'large-anvil',
+                'prayer-charm',
+                'carving-knife'
+        ]
+
+        [resourcePack].each { packTask ->
             def packContents = zipTree(packTask.archiveFile.get().asFile)
-            ['mappings.txt', 'gui/misc.png', 'gui/resource.png', 'gui/resource2.png',
+            ['mappings.txt', 'gui/misc.png', 'gui/armor.png', 'gui/resource.png', 'gui/resource2.png',
              'gui/tools.png', 'gui/weapons.png',
              'gui/custom/carving-knife.png',
              'gui/custom/prayer-charm.png',
@@ -153,10 +212,31 @@ task verifyArtifacts(dependsOn: [jar, resourcePack, realisticResourcePack]) {
              'gui/custom/dragon-scale-red.png',
              'gui/custom/dragon-scale-white.png',
              'gui/custom/magic-water-skin.png',
-             'gui/custom/santa-sack.png'].each { requiredResource ->
+             'gui/custom/santa-sack.png',
+             'gui/custom/shields/shield-small-wood.png',
+             'gui/custom/shields/shield-small-wood-mask.png',
+             'gui/custom/shields/shield-medium-wood.png',
+             'gui/custom/shields/shield-medium-wood-mask.png',
+             'gui/custom/shields/shield-large-wood.png',
+             'gui/custom/shields/shield-large-wood-mask.png',
+             'gui/custom/shields/shield-small-metal.png',
+             'gui/custom/shields/shield-small-metal-mask.png',
+             'gui/custom/shields/shield-medium-metal.png',
+             'gui/custom/shields/shield-medium-metal-mask.png',
+             'gui/custom/shields/shield-large-metal.png',
+             'gui/custom/shields/shield-large-metal-mask.png'].each { requiredResource ->
                 if (packContents.matching { include requiredResource }.files.empty) {
                     throw new GradleException(
                             packTask.name + ' is missing ' + requiredResource)
+                }
+            }
+            materialIconSlugs.each { slug ->
+                ["gui/custom/materials/${slug}.png",
+                 "gui/custom/materials/${slug}-mask.png"].each { requiredResource ->
+                    if (packContents.matching { include requiredResource }.files.empty) {
+                        throw new GradleException(
+                                packTask.name + ' is missing ' + requiredResource)
+                    }
                 }
             }
         }
@@ -170,7 +250,6 @@ task dist(type: Zip, dependsOn: [test, verifyArtifacts]) {
     into('mods/wurm-highres') {
         from jar
         from resourcePack
-        from realisticResourcePack
     }
     into('mods') {
         from 'mods/wurm-highres.properties'
@@ -184,7 +263,6 @@ task publicationZip(type: Zip, dependsOn: [test, verifyArtifacts]) {
     into('mods/wurm-highres') {
         from jar
         from resourcePack
-        from realisticResourcePack
     }
     into('mods') {
         from 'mods/wurm-highres.properties'

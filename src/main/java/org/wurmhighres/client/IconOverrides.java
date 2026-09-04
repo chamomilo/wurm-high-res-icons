@@ -58,19 +58,23 @@ public final class IconOverrides {
             return original;
         }
         String descriptor = itemDescriptor(item);
+        Texture shield = ShieldIcons.override(item, original);
+        if (shield != original) {
+            return shield;
+        }
         String magicalResource = magicalContainerResource(descriptor);
         if (magicalResource != null) {
             return icon(magicalResource, original);
         }
         String baseName = item.getBaseName();
         if (isLargeAnvil(item.getType(), item.getWeight(), baseName)) {
-            return icon(LARGE_ANVIL_RESOURCE, original);
+            return materialIcon(LARGE_ANVIL_RESOURCE, item.getMaterialId(), original);
         }
         if (isSmeltingPot(item.getType(), descriptor)) {
-            return icon(SMELTING_POT_RESOURCE, original);
+            return materialIcon(SMELTING_POT_RESOURCE, item.getMaterialId(), original);
         }
         if (isBrandingIron(item.getType(), descriptor)) {
-            return icon(BRANDING_IRON_RESOURCE, original);
+            return materialIcon(BRANDING_IRON_RESOURCE, item.getMaterialId(), original);
         }
         String anatomyResource = anatomyResource(item.getType(), descriptor);
         if (anatomyResource != null) {
@@ -79,7 +83,7 @@ public final class IconOverrides {
         String containerResource = containerResource(
                 item.getType(), descriptor, item.getWeight());
         if (containerResource != null) {
-            return icon(containerResource, original);
+            return materialIcon(containerResource, item.getMaterialId(), original);
         }
 
         String materialResource = materialResource(
@@ -88,15 +92,15 @@ public final class IconOverrides {
             return icon(materialResource, original);
         }
         if (isPrayerCharm(baseName)) {
-            return icon(PRAYER_CHARM_RESOURCE, original);
+            return materialIcon(PRAYER_CHARM_RESOURCE, item.getMaterialId(), original);
         }
         if (isPress(baseName)) {
-            return icon(PRESS_RESOURCE, original);
+            return materialIcon(PRESS_RESOURCE, item.getMaterialId(), original);
         }
         if (isCarvingKnife(baseName)) {
-            return icon(CARVING_KNIFE_RESOURCE, original);
+            return materialIcon(CARVING_KNIFE_RESOURCE, item.getMaterialId(), original);
         }
-        return original;
+        return MaterialIcons.override(item, original);
     }
 
     /** Overrides recipe rows where the client exposes a name but no InventoryMetaItem. */
@@ -104,18 +108,22 @@ public final class IconOverrides {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
         }
+        Texture shield = ShieldIcons.overrideByName(name, original);
+        if (shield != original) {
+            return shield;
+        }
         String magicalResource = magicalContainerResource(name);
         if (magicalResource != null) {
             return icon(magicalResource, original);
         }
         if (isLargeAnvilName(name)) {
-            return icon(LARGE_ANVIL_RESOURCE, original);
+            return materialIcon(LARGE_ANVIL_RESOURCE, name, original);
         }
         if (isSmeltingPot(POTTERY_BOWL_SMELTING_POT_ICON_ID, name)) {
-            return icon(SMELTING_POT_RESOURCE, original);
+            return materialIcon(SMELTING_POT_RESOURCE, name, original);
         }
         if (isBrandingIron(PLIERS_BRANDING_IRON_ICON_ID, name)) {
-            return icon(BRANDING_IRON_RESOURCE, original);
+            return materialIcon(BRANDING_IRON_RESOURCE, name, original);
         }
         String anatomyResource = anatomyResourceFromName(name);
         if (anatomyResource != null) {
@@ -123,19 +131,33 @@ public final class IconOverrides {
         }
         String containerResource = containerResource(SHARED_BARREL_ICON_ID, name, 0.0f);
         if (containerResource != null) {
-            return icon(containerResource, original);
+            return materialIcon(containerResource, name, original);
         }
         if (isPrayerCharm(name)) {
-            return icon(PRAYER_CHARM_RESOURCE, original);
+            return materialIcon(PRAYER_CHARM_RESOURCE, name, original);
         }
         if (isPress(name)) {
-            return icon(PRESS_RESOURCE, original);
+            return materialIcon(PRESS_RESOURCE, name, original);
         }
         if (isCarvingKnife(name)) {
-            return icon(CARVING_KNIFE_RESOURCE, original);
+            return materialIcon(CARVING_KNIFE_RESOURCE, name, original);
         }
         String materialResource = materialResourceFromName(name);
         return materialResource == null ? original : icon(materialResource, original);
+    }
+
+    /** Overrides recipe rows while retaining their exact atlas cell ID. */
+    public static Texture overrideByName(short iconId, String name, Texture original) {
+        if (!WurmHighresSettings.replaceIcons) {
+            return original;
+        }
+        Texture shield = ShieldIcons.overrideByDescriptor(iconId, name, original);
+        if (shield != original) {
+            return shield;
+        }
+        Texture named = overrideByName(name, original);
+        return named != original ? named
+                : MaterialIcons.overrideByDescriptor(iconId, name, original);
     }
 
     /** Handles Build slots populated from the ground, which expose ID and name but no RGB. */
@@ -145,18 +167,22 @@ public final class IconOverrides {
             return original;
         }
         String descriptor = name + " " + groundDescriptor(groundItemId);
+        Texture shield = ShieldIcons.overrideGround(iconId, descriptor, original);
+        if (shield != original) {
+            return shield;
+        }
         String magicalResource = magicalContainerResource(descriptor);
         if (magicalResource != null) {
             return icon(magicalResource, original);
         }
         if (isLargeAnvil(iconId, 0.0f, name)) {
-            return icon(LARGE_ANVIL_RESOURCE, original);
+            return materialIcon(LARGE_ANVIL_RESOURCE, descriptor, original);
         }
         if (isSmeltingPot(iconId, descriptor)) {
-            return icon(SMELTING_POT_RESOURCE, original);
+            return materialIcon(SMELTING_POT_RESOURCE, descriptor, original);
         }
         if (isBrandingIron(iconId, descriptor)) {
-            return icon(BRANDING_IRON_RESOURCE, original);
+            return materialIcon(BRANDING_IRON_RESOURCE, descriptor, original);
         }
         String anatomyResource = anatomyResource(
                 iconId, descriptor);
@@ -166,19 +192,24 @@ public final class IconOverrides {
         String containerResource = containerResource(
                 iconId, descriptor, 0.0f);
         if (containerResource != null) {
-            return icon(containerResource, original);
+            return materialIcon(containerResource, descriptor, original);
         }
         float[] colour = groundColour(groundItemId);
         float r = colour == null ? 0.0f : colour[0];
         float g = colour == null ? 0.0f : colour[1];
         float b = colour == null ? 0.0f : colour[2];
         String materialResource = materialResource(iconId, name, r, g, b);
-        return materialResource == null ? overrideByName(name, original)
-                : icon(materialResource, original);
+        if (materialResource != null) {
+            return icon(materialResource, original);
+        }
+        Texture named = overrideByName(name, original);
+        return named != original ? named
+                : MaterialIcons.overrideByDescriptor(iconId, descriptor, original);
     }
 
     static boolean hasCustomIcon(String baseName) {
-        return magicalContainerResource(baseName) != null
+        return ShieldIcons.recognizesName(baseName)
+                || magicalContainerResource(baseName) != null
                 || isCarvingKnife(baseName)
                 || isPrayerCharm(baseName)
                 || isPress(baseName)
@@ -500,6 +531,16 @@ public final class IconOverrides {
 
     private static String normalize(String value) {
         return value == null ? "" : value.trim().toLowerCase(Locale.ENGLISH);
+    }
+
+    private static Texture materialIcon(String resource, byte material, Texture original) {
+        Texture base = icon(resource, original);
+        return MaterialIcons.overrideCustom(resource, material, base);
+    }
+
+    private static Texture materialIcon(String resource, String descriptor, Texture original) {
+        Texture base = icon(resource, original);
+        return MaterialIcons.overrideCustomByDescriptor(resource, descriptor, base);
     }
 
     private static Texture icon(String resource, Texture original) {

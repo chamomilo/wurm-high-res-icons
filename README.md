@@ -9,6 +9,8 @@ WURM High-Res Icons is a client-side visual mod for Wurm Unlimited. It replaces 
 - Detailed 32×32 icons for Inventory, Toolbelt, Equipment and Build/Creation windows, including backpack, bladder, fat, feather, fur, gland, hoof, horn, leather knife, paw, quiver, satchel, tail, tooth, twisted horn and water skin.
 - Separate artwork for many items that share one vanilla icon ID, including carving knife / stone chisel, small / large anvil, leather / hide / pelt, bladder / gland, horn / twisted horn, pottery bowl / smelting pot, press / fruit press and several barrel types.
 - Separate muted-color drake-hide and dragon-scale icons for black, blue, green, red and white dragons.
+- Six shield renders from the original game meshes. Wood and metal materials are recoloured at runtime from one base icon and one mask per shape, without storing per-colour duplicates.
+- Material-aware metal and wood regions on every eligible redesigned item: blades, tool heads, brush bristles, wooden handles, staves and frames use the item's actual game material while other parts remain unchanged. Each artwork still needs only one neutral base and one mask.
 - Animated rare, supreme and fantastic highlighting: irregular pulsing blob (default) or rotating five-point star, with an optional white shimmer.
 - Magic water skins and Santa sacks have their own animated diamond-like rainbow refraction and a moving sunlight glint (`magicShimmer=true`).
 - Runtime resource packs: the mod does not overwrite `packs/graphics.jar`.
@@ -25,11 +27,11 @@ WURM High-Res Icons is a client-side visual mod for Wurm Unlimited. It replaces 
 Download the latest ZIP from [GitHub Releases](https://github.com/chamomilo/wurm-high-res-icons/releases/latest).
 
 1. Close Wurm Unlimited.
-2. Extract `WURM-High-Res-Icons-0.1.26.zip` into the `WurmLauncher` folder.
+2. Extract `WURM-High-Res-Icons-0.1.30.zip` into the `WurmLauncher` folder.
 3. Keep the included `mods` directory structure.
 4. Start the client through Ago's Client ModLauncher.
 
-The realistic icon set and pulsing blob rarity effect are enabled by default. Advanced settings are available in `mods/wurm-highres.properties`; restart the client after changing them.
+The realistic icon set and pulsing blob rarity effect are enabled by default. The former exaggerated/readable alternate set is no longer included. Advanced settings are available in `mods/wurm-highres.properties`; restart the client after changing them.
 
 ## Building
 
