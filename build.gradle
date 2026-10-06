@@ -251,7 +251,8 @@ task dist(type: Zip, dependsOn: [test, verifyArtifacts]) {
         from jar
         from resourcePack
         from 'README.md'
-        from('lgpl-3.0.txt') { rename { 'LICENSE' } }
+        from('LICENSE')
+        from('lgpl-3.0.txt')
     }
     into('mods') {
         from 'mods/wurm-highres.properties'
@@ -266,7 +267,8 @@ task publicationZip(type: Zip, dependsOn: [test, verifyArtifacts]) {
         from jar
         from resourcePack
         from 'README.md'
-        from('lgpl-3.0.txt') { rename { 'LICENSE' } }
+        from('LICENSE')
+        from('lgpl-3.0.txt')
     }
     into('mods') {
         from 'mods/wurm-highres.properties'

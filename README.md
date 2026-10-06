@@ -45,7 +45,7 @@ gradlew.bat clean test publicationZip
 
 Created by **Chamomilo**.
 
-Licensed under **GNU LGPL 3.0 or later**. See [`lgpl-3.0.txt`](lgpl-3.0.txt).
+Licensed under **GNU GPL 3.0 or later**. See [`LICENSE`](LICENSE). The earlier LGPL notice is retained in [`lgpl-3.0.txt`](lgpl-3.0.txt).
 
 ## Chamomilo versions
 
