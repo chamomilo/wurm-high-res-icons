@@ -27,7 +27,7 @@ WURM High-Res Icons is a client-side visual mod for Wurm Unlimited. It replaces 
 Download the latest ZIP from [GitHub Releases](https://github.com/chamomilo/wurm-high-res-icons/releases/latest).
 
 1. Close Wurm Unlimited.
-2. Extract `WURM-High-Res-Icons-0.1.30.zip` into the `WurmLauncher` folder.
+2. Extract `WURM-High-Res-Icons-0.1.31.zip` into the `WurmLauncher` folder.
 3. Keep the included `mods` directory structure.
 4. Start the client through Ago's Client ModLauncher.
 
@@ -46,3 +46,7 @@ gradlew.bat clean test publicationZip
 Created by **Chamomilo**.
 
 Licensed under **GNU LGPL 3.0 or later**. See [`lgpl-3.0.txt`](lgpl-3.0.txt).
+
+## Chamomilo versions
+
+Version 0.1.31 embeds the shared Chamomilo updater. A versions window opens at every launch after the HUD is ready and lists all mods from the public GitHub catalogue, including disabled and absent installations. UPDATE opens a newer installed release; INSTALL opens a release for an absent mod. ZIP installation remains manual. The public catalogue is refreshed without requiring new client binaries; a verified copy is retained for offline startup. All Chamomilo updater copies share one window, with a thin high-resolution wood-and-metal frame.

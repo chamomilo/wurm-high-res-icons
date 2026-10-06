@@ -5,3 +5,15 @@ local.properties
 *.log
 __pycache__/
 *.py[cod]
+
+.gradle/
+.gradle-user/
+build/
+libs/
+local.properties
+*.log
+*.zip
+__pycache__/
+*.pyc
+.tmp*/
+mods/*/*.jar

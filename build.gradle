@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.wurmhighres'
-version = '0.1.30'
+version = '0.1.31'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -250,6 +250,8 @@ task dist(type: Zip, dependsOn: [test, verifyArtifacts]) {
     into('mods/wurm-highres') {
         from jar
         from resourcePack
+        from 'README.md'
+        from('lgpl-3.0.txt') { rename { 'LICENSE' } }
     }
     into('mods') {
         from 'mods/wurm-highres.properties'
@@ -263,6 +265,8 @@ task publicationZip(type: Zip, dependsOn: [test, verifyArtifacts]) {
     into('mods/wurm-highres') {
         from jar
         from resourcePack
+        from 'README.md'
+        from('lgpl-3.0.txt') { rename { 'LICENSE' } }
     }
     into('mods') {
         from 'mods/wurm-highres.properties'
@@ -270,3 +274,6 @@ task publicationZip(type: Zip, dependsOn: [test, verifyArtifacts]) {
 }
 
 build.dependsOn verifyArtifacts
+
+ext.chamomiloUpdate = [id: 'wurm-highres', name: 'High Res Icons', repo: 'chamomilo/wurm-high-res-icons', asset: 'WURM-High-Res-Icons-{version}.zip', properties: 'mods/wurm-highres.properties', main: 'src/main/java/org/wurmhighres/client/WurmHighresMod.java']
+apply from: 'gradle/chamomilo-updater.gradle'

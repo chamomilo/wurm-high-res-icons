@@ -8,7 +8,7 @@ final class WurmHighresSettings {
     private static final Logger LOGGER = Logger.getLogger(WurmHighresSettings.class.getName());
     private static final String DEFAULT_RARITY_ANIMATION = "blob";
     private static final String DEFAULT_RESOURCE_PACK =
-            "mods/wurm-highres/wurm-highres-resources-0.1.30.jar";
+            "mods/wurm-highres/wurm-highres-resources-0.1.31.jar";
 
     static volatile boolean replaceIcons = true;
     static volatile boolean rarityGlow = true;
