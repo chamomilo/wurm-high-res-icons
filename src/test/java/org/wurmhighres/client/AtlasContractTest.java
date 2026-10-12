@@ -26,7 +26,7 @@ public class AtlasContractTest {
         BufferedImage tools = readAtlas(project, packDirectory, "tools.png", 640, 384);
         BufferedImage weapons = readAtlas(project, packDirectory, "weapons.png", 640, 400);
 
-        int[] miscIds = {240, 241, 242, 282};
+        int[] miscIds = {240, 241, 242, 251, 282, 291};
         for (int id : miscIds) {
             assertCellVisible(misc, id);
         }
@@ -57,8 +57,8 @@ public class AtlasContractTest {
         }
         assertCellVisible(resource2, 1489);
 
-        int[] toolIds = {738, 741, 742, 743, 745, 746, 747, 749, 750, 752,
-                754, 755, 760, 766, 780, 802, 803, 882, 902};
+        int[] toolIds = {738, 741, 742, 743, 745, 746, 747, 749, 750, 752, 753,
+                754, 755, 760, 766, 780, 802, 803, 820, 821, 823, 825, 882, 902};
         for (int id : toolIds) {
             assertCellVisible(tools, id);
         }
@@ -67,7 +67,7 @@ public class AtlasContractTest {
         assertCellVisible(weapons, 1207);
 
         String[] customMaterials = {
-                "magic-water-skin.png", "santa-sack.png",
+                "magic-water-skin.png", "santa-sack.png", "light-token.png",
                 "gland.png", "twisted-horn.png",
                 "hide.png", "leather.png",
                 "drake-hide-black.png", "drake-hide-blue.png",

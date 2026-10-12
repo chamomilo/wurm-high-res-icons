@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.wurmhighres'
-version = '0.1.31'
+version = '0.1.39'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -67,6 +67,9 @@ test {
 
 jar {
     archiveFileName = "wurm-highres-${project.version}.jar"
+    into('META-INF/licenses/wurm-highres') {
+        from 'LICENSE', 'lgpl-3.0.txt'
+    }
 }
 
 task resourcePack(type: Jar) {
@@ -86,6 +89,8 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'org/wurmhighres/client/IconOverrides.class',
                 'org/wurmhighres/client/MaterialIcons.class',
                 'org/wurmhighres/client/ShieldIcons.class',
+                'META-INF/licenses/wurm-highres/LICENSE',
+                'META-INF/licenses/wurm-highres/lgpl-3.0.txt',
                 'org/wurmhighres/client/icons/carving-knife.png',
                 'org/wurmhighres/client/icons/prayer-charm.png',
                 'org/wurmhighres/client/icons/large-anvil.png',
@@ -113,6 +118,7 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'org/wurmhighres/client/icons/dragon-scale-white.png',
                 'org/wurmhighres/client/icons/magic-water-skin.png',
                 'org/wurmhighres/client/icons/santa-sack.png',
+                'org/wurmhighres/client/icons/light-token.png',
                 'org/wurmhighres/client/icons/shield-small-wood.png',
                 'org/wurmhighres/client/icons/shield-small-wood-mask.png',
                 'org/wurmhighres/client/icons/shield-medium-wood.png',
@@ -131,7 +137,19 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
             }
         }
 
+        def modZip = new java.util.zip.ZipFile(jar.archiveFile.get().asFile)
+        try {
+            ['LICENSE', 'lgpl-3.0.txt'].each { notice ->
+                def entry = modZip.getEntry('META-INF/licenses/wurm-highres/' + notice)
+                if (!java.util.Arrays.equals(modZip.getInputStream(entry).bytes, file(notice).bytes)) {
+                    throw new GradleException('Embedded license differs from ' + notice)
+                }
+            }
+        } finally { modZip.close() }
+
         def materialIconSlugs = [
+                'candelabra',
+                'oil-lamp', 'lamp', 'hanging-lamp', 'torch-lamp', 'imperial-street-lamp',
                 'praying-statuette',
                 'chain',
                 'butchering-knife',
@@ -154,6 +172,7 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'file',
                 'trowel',
                 'sickle',
+                'scythe',
                 'pliers',
                 'spindle',
                 'small-anvil',
@@ -213,6 +232,7 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
              'gui/custom/dragon-scale-white.png',
              'gui/custom/magic-water-skin.png',
              'gui/custom/santa-sack.png',
+             'gui/custom/light-token.png',
              'gui/custom/shields/shield-small-wood.png',
              'gui/custom/shields/shield-small-wood-mask.png',
              'gui/custom/shields/shield-medium-wood.png',
@@ -250,13 +270,11 @@ task dist(type: Zip, dependsOn: [test, verifyArtifacts]) {
     into('mods/wurm-highres') {
         from jar
         from resourcePack
-        from 'README.md'
-        from('LICENSE')
-        from('lgpl-3.0.txt')
     }
     into('mods') {
         from 'mods/wurm-highres.properties'
     }
+    from 'README.txt'
 }
 
 task publicationZip(type: Zip, dependsOn: [test, verifyArtifacts]) {
@@ -266,12 +284,34 @@ task publicationZip(type: Zip, dependsOn: [test, verifyArtifacts]) {
     into('mods/wurm-highres') {
         from jar
         from resourcePack
-        from 'README.md'
-        from('LICENSE')
-        from('lgpl-3.0.txt')
     }
     into('mods') {
         from 'mods/wurm-highres.properties'
+    }
+    from 'README.txt'
+}
+
+[dist, publicationZip].each { distribution ->
+    distribution.duplicatesStrategy = DuplicatesStrategy.FAIL
+    distribution.doLast {
+        def expected = [
+                'README.txt',
+                'mods/wurm-highres.properties',
+                'mods/wurm-highres/' + jar.archiveFileName.get(),
+                'mods/wurm-highres/' + resourcePack.archiveFileName.get()
+        ] as Set
+        def archive = new java.util.zip.ZipFile(distribution.archiveFile.get().asFile)
+        try {
+            def actual = archive.entries().findAll { !it.directory }.collect { it.name }
+            if (actual.size() != expected.size() || actual.toSet() != expected) {
+                throw new GradleException('Distribution must contain only runtime mod files and README.txt: ' + actual)
+            }
+            if (!java.util.Arrays.equals(archive.getInputStream(archive.getEntry('README.txt')).bytes,
+                    file('README.txt').bytes)) {
+                throw new GradleException('Distribution README.txt differs from source')
+            }
+            logger.lifecycle('Verified distribution: three runtime files and README.txt')
+        } finally { archive.close() }
     }
 }
 

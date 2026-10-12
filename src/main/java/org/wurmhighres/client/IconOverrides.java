@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class IconOverrides {
     static final String MAGIC_WATER_SKIN_RESOURCE = "img.wurmhighres.magicwaterskin";
     static final String SANTA_SACK_RESOURCE = "img.wurmhighres.santasack";
+    static final String LIGHT_TOKEN_RESOURCE = "img.wurmhighres.lighttoken";
     private static final String CARVING_KNIFE_NAME = "carving knife";
     private static final String CARVING_KNIFE_RESOURCE = "img.wurmhighres.carvingknife";
     private static final String PRAYER_CHARM_NAME = "prayer charm";
@@ -67,6 +68,10 @@ public final class IconOverrides {
             return icon(magicalResource, original);
         }
         String baseName = item.getBaseName();
+        String lightResource = lightingResource(item.getType(), baseName);
+        if (lightResource != null) {
+            return icon(lightResource, original);
+        }
         if (isLargeAnvil(item.getType(), item.getWeight(), baseName)) {
             return materialIcon(LARGE_ANVIL_RESOURCE, item.getMaterialId(), original);
         }
@@ -107,6 +112,9 @@ public final class IconOverrides {
     public static Texture overrideByName(String name, Texture original) {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
+        }
+        if (isLightTokenName(name)) {
+            return icon(LIGHT_TOKEN_RESOURCE, original);
         }
         Texture shield = ShieldIcons.overrideByName(name, original);
         if (shield != original) {
@@ -151,6 +159,13 @@ public final class IconOverrides {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
         }
+        if (iconId == 823 || iconId == 825) {
+            String resource = MaterialIcons.baseResource(iconId, name);
+            if (resource != null) {
+                // Recipe rows without a material still need their own shape.
+                return MaterialIcons.overrideByDescriptor(iconId, name, icon(resource, original));
+            }
+        }
         Texture shield = ShieldIcons.overrideByDescriptor(iconId, name, original);
         if (shield != original) {
             return shield;
@@ -167,6 +182,16 @@ public final class IconOverrides {
             return original;
         }
         String descriptor = name + " " + groundDescriptor(groundItemId);
+        if (iconId == 823 || iconId == 825) {
+            String resource = MaterialIcons.baseResource(iconId, descriptor);
+            if (resource != null) {
+                return MaterialIcons.overrideByDescriptor(iconId, descriptor, icon(resource, original));
+            }
+        }
+        String lightResource = lightingResource(iconId, descriptor);
+        if (lightResource != null) {
+            return icon(lightResource, original);
+        }
         Texture shield = ShieldIcons.overrideGround(iconId, descriptor, original);
         if (shield != original) {
             return shield;
@@ -209,6 +234,7 @@ public final class IconOverrides {
 
     static boolean hasCustomIcon(String baseName) {
         return ShieldIcons.recognizesName(baseName)
+                || isLightTokenName(baseName)
                 || magicalContainerResource(baseName) != null
                 || isCarvingKnife(baseName)
                 || isPrayerCharm(baseName)
@@ -218,6 +244,30 @@ public final class IconOverrides {
                 || anatomyResourceFromName(baseName) != null
                 || containerResource(SHARED_BARREL_ICON_ID, baseName, 0.0f) != null
                 || materialResourceFromName(baseName) != null;
+    }
+
+    /** Cell 820 is shared by a wooden torch and a magical light token. */
+    static String lightingResource(short iconId, String descriptor) {
+        if (iconId != 820) {
+            return null;
+        }
+        String normalized = normalize(descriptor).replace('.', ' ').replace('_', ' ');
+        return isLightTokenName(descriptor) || containsPhrase(normalized, "model light token")
+                ? LIGHT_TOKEN_RESOURCE : null;
+    }
+
+    private static boolean isLightTokenName(String name) {
+        String normalized = normalize(name);
+        for (String rarity : new String[]{"rare ", "supreme ", "fantastic "}) {
+            if (normalized.startsWith(rarity)) {
+                normalized = normalized.substring(rarity.length());
+                break;
+            }
+        }
+        return normalized.equals("light token") || normalized.equals("light tokens")
+                || normalized.startsWith("light token,")
+                || normalized.startsWith("light token (")
+                || normalized.startsWith("light tokens,");
     }
 
     static String magicalContainerResource(String descriptor) {

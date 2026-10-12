@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class WurmHighresMod implements org.gotti.wurmunlimited.modloader.interfaces.ModListener, WurmClientMod, Configurable, PreInitable, Initable {
-    public static final String VERSION = "0.1.31";
+    public static final String VERSION = "0.1.39";
     @Override public String getVersion() { return VERSION; }
 
     private static final Logger LOGGER = Logger.getLogger(WurmHighresMod.class.getName());
@@ -61,7 +61,7 @@ public final class WurmHighresMod implements org.gotti.wurmunlimited.modloader.i
     @Override
     public void init() {
         org.chamomilo.wurm.update.SharedUpdateHooks.registerHost("wurm-highres");
-        LOGGER.info("wurm-highres 0.1.31 initialized");
+        LOGGER.info("wurm-highres " + VERSION + " initialized");
     }
 
     private static void installResourcePackHook(ClassPool pool) throws Exception {

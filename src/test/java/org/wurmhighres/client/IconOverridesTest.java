@@ -9,6 +9,23 @@ import static org.junit.Assert.assertTrue;
 
 public class IconOverridesTest {
     @Test
+    public void lightTokenIsSeparatedFromTorchAcrossInventoryRecipeAndGroundNames() {
+        for (String name : new String[]{"light token", "Rare light token", "Supreme light token, stone",
+                "Fantastic light token (lit)", "light tokens"}) {
+            assertEquals(IconOverrides.LIGHT_TOKEN_RESOURCE,
+                    IconOverrides.lightingResource((short) 820, name));
+            assertTrue(IconOverrides.hasCustomIcon(name));
+        }
+        assertEquals(IconOverrides.LIGHT_TOKEN_RESOURCE,
+                IconOverrides.lightingResource((short) 820, "token model.light.token.stone."));
+        assertNull(IconOverrides.lightingResource((short) 820, "torch"));
+        assertNull(IconOverrides.lightingResource((short) 820, "torch, birchwood"));
+        assertNull(IconOverrides.lightingResource((short) 820, "a picture of a light token"));
+        assertNull(IconOverrides.lightingResource((short) 821, "light token"));
+        assertFalse(IconOverrides.hasCustomIcon("torch used with a light token"));
+    }
+
+    @Test
     public void carvingKnifeGetsASeparateClientOnlyTexture() {
         assertTrue(IconOverrides.hasCustomIcon("carving knife"));
         assertTrue(IconOverrides.hasCustomIcon("CARVING KNIFE"));
