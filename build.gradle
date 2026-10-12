@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.wurmhighres'
-version = '0.1.39'
+version = '0.2.0'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -87,6 +87,9 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'org/wurmhighres/client/RarityEffects.class',
                 'org/wurmhighres/client/MagicEffects.class',
                 'org/wurmhighres/client/IconOverrides.class',
+                'org/wurmhighres/client/StorageIcons.class',
+                'org/wurmhighres/client/CookwareIcons.class',
+                'org/wurmhighres/client/ModSettingsSchema.class',
                 'org/wurmhighres/client/MaterialIcons.class',
                 'org/wurmhighres/client/ShieldIcons.class',
                 'META-INF/licenses/wurm-highres/LICENSE',
@@ -148,6 +151,9 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
         } finally { modZip.close() }
 
         def materialIconSlugs = [
+                'bowl', 'frying-pan', 'sauce-pan', 'cauldron',
+                'buoy',
+                'chest', 'tackle-box', 'compartment',
                 'candelabra',
                 'oil-lamp', 'lamp', 'hanging-lamp', 'torch-lamp', 'imperial-street-lamp',
                 'praying-statuette',
@@ -204,6 +210,10 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
         [resourcePack].each { packTask ->
             def packContents = zipTree(packTask.archiveFile.get().asFile)
             ['mappings.txt', 'gui/misc.png', 'gui/armor.png', 'gui/resource.png', 'gui/resource2.png',
+             'gui/custom/gift.png', 'gui/custom/gift-box.png', 'gui/custom/chest.png',
+             'gui/custom/tackle-box.png', 'gui/custom/compartment.png',
+             'gui/custom/buoy.png',
+             'gui/custom/frying-pan.png', 'gui/custom/sauce-pan.png',
              'gui/tools.png', 'gui/weapons.png',
              'gui/custom/carving-knife.png',
              'gui/custom/prayer-charm.png',

@@ -1,87 +1,113 @@
 # WURM High-Res Icons
 
-Detailed item icons and animated rarity effects for the **Wurm Unlimited client**, by **Chamomilo**.
+![High Res Icons](docs/branding/high-res-icons-logo-128.png)
 
-![Original and replacement icons for carving knife, stone chisel, leather and hide](docs/WURM-High-Res-Icons-before-after.png)
+Detailed item icons, material colours and animated rarity effects for the **Wurm Unlimited client**, by **Chamomilo**.
 
-[Download the latest release](https://github.com/chamomilo/wurm-high-res-icons/releases/latest) · [Release history](CHANGELOG.md) · [Report an issue](https://github.com/chamomilo/wurm-high-res-icons/issues)
+[Download 0.2.0](https://github.com/chamomilo/wurm-high-res-icons/releases/tag/v0.2.0) · [Release notes](CHANGELOG.md) · [Report an issue](https://github.com/chamomilo/wurm-high-res-icons/issues)
 
-## What it changes
+![Original and replacement item icons](docs/WURM-High-Res-Icons-before-after.png)
 
-- Detailed 32 × 32 item artwork in Inventory, Toolbelt, Equipment and Creation/Build windows.
-- Separate icons for supported items that share an original image: carving knife and stone chisel, hide and leather, anvil sizes, barrel types, torch and light token, and four lamp types.
-- Material colours for supported tools, shields and other objects. Metal parts follow the item's material; wooden handles, glass and flames keep their own colours.
-- Individual colours for black, blue, green, red and white drake hides and dragon scales.
-- Animated highlights for rare, supreme and fantastic items, with a pulsing blob or rotating star.
+## Features
+
+- Detailed 32 × 32 artwork in Inventory, Toolbelt, Equipment and Creation/Build windows.
+- Separate images for supported shared-icon items, including gifts, containers, lamps, frying pan and sauce pan.
+- Metal and wood colours based on the item's material. Masks preserve wooden handles, glass, candles and other parts.
+- Individual colours for drake hides and dragon scales.
+- Animated rare, supreme and fantastic glow, with a pulsing blob or rotating star.
 - Rainbow shimmer for magic water skins and Santa sacks.
+- An in-game Settings editor with hover help and saved preferences.
 
-The resource pack loads at runtime. Game archives and server item data remain unchanged.
+The resource pack loads at client startup. Item artwork follows the game designs with smoother contours and clearer silhouettes.
 
-## Tools and metals
+## Tools and materials
 
-Seryll tools use a consistent material colour across ordinary and rare items, including recognized tools with server-specific icon IDs. The palette distinguishes white zinc, slightly greyer silver, light steel, dark iron, yellow gold, reddish copper, warm brass, cool tin, dark lead and yellow-green electrum. Adamantine and seryll use the game's colours.
+The palette distinguishes white zinc, slightly greyer silver, light steel, dark iron, yellow gold, reddish copper, warm brass, cool tin, dark lead and yellow-green electrum. Adamantine and seryll use the game's colours. Supported material-specific server items use the same artwork across rarity levels.
 
-![Six tools in twelve metal colours, including lead and electrum](docs/images/tool-metals.png)
+![Tools in twelve metal colours](docs/images/tool-metals.png)
 
-These are the mod's 32 × 32 runtime icons, enlarged for comparison.
+These previews show the actual 32 × 32 icons enlarged for comparison.
 
 ## Lamps and lighting
 
-Candelabra, campfire, torch, candle and light token have redesigned icons. Oil lamp, lamp, hanging lamp, torch lamp and imperial street lamp use close-up compositions with visible lamp heads. The light token and the four lamp types have separate artwork.
+Candelabra, campfire, wooden torch, wax candle and light token have redesigned images. Oil lamp, lamp, hanging lamp, torch lamp and imperial street lamp show distinctive lamp heads. The light token and four assembled lamp types each have separate artwork.
 
-![Ten lighting icons from the current mod](docs/images/lighting.png)
+![Ten lighting icons](docs/images/lighting.png)
+
+## Gifts and containers
+
+Gift and gift box have different images. Chest, tackle box and compartment preserve their individual game designs. Material masks keep the chest's metal fittings and the gift's red-and-gold colours intact.
+
+![Gifts and containers](docs/images/containers.png)
+
+## Buoy and clay vessels
+
+The buoy has its own lantern-on-barrel image. Its wood mask preserves the lantern and iron hoops. Raw clay vessels are matte grey; fired pottery is warm brown. Rounded rims, bodies and handles remove the sharp corners of the original models.
+
+![Buoy and clay vessels](docs/images/buoy-pottery.png)
+
+## Cookware
+
+The pottery flask has a clearly visible side handle. The metal bowl retains its relief and low base. Frying pan and sauce pan use separate shallow and deep profiles in Inventory, recipes and ground Build slots. The cauldron retains its side lugs and feet. Four metal masks apply the tool palette to the cookware.
+
+![Pottery flask and metal cookware](docs/images/cookware.png)
 
 ## Installation
 
-Requires the Wurm Unlimited client with [Ago's Client ModLauncher](https://github.com/ago1024/WurmClientModLauncher/releases).
+Requires **Wurm Unlimited** with [Ago's Client ModLauncher](https://github.com/ago1024/WurmClientModLauncher/releases).
 
 1. Close the game client.
-2. Download `WURM-High-Res-Icons-0.1.39.zip` from [Releases](https://github.com/chamomilo/wurm-high-res-icons/releases/latest).
-3. Extract the ZIP into your `WurmLauncher` folder, keeping the `mods` directory structure. Allow replacement of the existing mod configuration when updating, or merge your custom settings manually.
-4. Start the client through Client ModLauncher.
+2. Download [WURM-High-Res-Icons-0.2.0.zip](https://github.com/chamomilo/wurm-high-res-icons/releases/tag/v0.2.0).
+3. Extract it into your `WurmLauncher` folder, preserving the `mods` structure.
+4. When updating, replace the configuration or merge your custom values into the new file.
+5. Start the client through Client ModLauncher.
 
-The installation ZIP contains exactly these files:
+The ZIP contains exactly four files:
 
 ```text
 README.txt
-mods/
-  wurm-highres.properties
-  wurm-highres/
-    wurm-highres-0.1.39.jar
-    wurm-highres-resources-0.1.39.jar
+mods/wurm-highres.properties
+mods/wurm-highres/wurm-highres-0.2.0.jar
+mods/wurm-highres/wurm-highres-resources-0.2.0.jar
 ```
 
 ## Settings
 
-Edit `mods/wurm-highres.properties` while the client is closed. Restart the client after changing settings.
+Open **Mod updates** after the HUD appears, then select **Settings** on the High Res Icons card. Parameters include hover help. Valid changes are saved automatically and apply during play where supported. Startup-only changes show a restart notice and offer Wurm's normal quit confirmation.
 
-| Setting | Default | Effect |
+The editor follows the shared language selection. You can also edit `mods/wurm-highres.properties` with the client closed.
+
+| Setting | Default | Purpose |
 | --- | --- | --- |
-| `replaceIcons` | `true` | Enable the replacement artwork. |
-| `rarityGlow` | `true` | Highlight rare, supreme and fantastic items. |
-| `rarityBackground` | `false` | Add a coloured background behind rare items. |
+| `replaceIcons` | `true` | Replacement item artwork. |
+| `rarityGlow` | `true` | Rare-item glow. |
+| `rarityBackground` | `false` | Coloured background behind rare items. |
 | `rarityAnimation` | `blob` | Choose `blob` or `star`. |
-| `pulseGlow` | `true` | Enable the pulsing white shimmer. |
-| `magicShimmer` | `true` | Enable the magic water skin and Santa sack effect. |
+| `pulseGlow` | `true` | Animate the glow. |
+| `magicShimmer` | `true` | Magic water skin and Santa sack shimmer. |
+| `glowRadius` | `3` | Glow width in pixels. |
+| `glowAlpha` | `0.48` | Glow opacity. |
+| `backgroundAlpha` | `0.16` | Rarity background opacity. |
+| `rareColor` | `66,153,224` | Rare colour. |
+| `supremeColor` | `0,255,255` | Supreme colour. |
+| `fantasticColor` | `255,0,255` | Fantastic colour. |
 
-Rarity colours accept comma-separated RGB values or hex colours. Defaults are `66,153,224` for rare, `0,255,255` for supreme and `255,0,255` for fantastic. Glow size and opacity can be adjusted with `glowRadius`, `glowAlpha` and `backgroundAlpha`.
+Colours accept RGB values or `#RRGGBB`. The `resourcePack` path must match the installed resource JAR; changing it requires a restart.
 
 ## Updates
 
-Version **0.1.39** includes the shared **Chamomilo updater 1.4.2** and **Chamomilo UI 0.4.11**. The native **Mod updates** menu opens the shared update window after the HUD starts. **DOWNLOAD** opens the release page; install the downloaded ZIP manually with the client closed. The updater also provides a shared language selector for participating mods.
+Version **0.2.0** embeds **Chamomilo updater 1.5.0** and **Chamomilo UI 0.4.11**. The shared registry lists participating mods and their available releases. **DOWNLOAD** opens the release page. Install ZIP updates manually with the client closed.
 
 ## Building from source
 
-Use Java 8, the Gradle wrapper and local Wurm client libraries. Copy `local.properties.example` to `local.properties` and set `wurmClientLibDir` to the folder containing `client-patched.jar`, `common.jar`, `javassist.jar` and `modlauncher.jar`.
+Use JDK 8, the Gradle wrapper, your Wurm client libraries and the canonical Chamomilo updater checkout:
 
-The build embeds the complete canonical Chamomilo updater from an external reference checkout. Set `CHAMOMILO_UPDATER_REFERENCE` or pass `-PchamomiloUpdaterReference=<reference-directory>`. The reference also needs the client JavaFX JAR, supplied as `-PwurmJavaFxJar=<path-to-jfxrt.jar>`.
-
-```text
-gradlew.bat clean test publicationZip -PchamomiloUpdaterReference=<reference-directory> -PwurmJavaFxJar=<path-to-jfxrt.jar>
+```sh
+./gradlew test publicationZip -PwurmClientLibDir=/path/to/client/libs -PchamomiloUpdaterReference=/path/to/updater
 ```
 
-The release ZIP is written to `build/publication`. The build verifies the updater's version, complete entry set and bytes, its startup bootstrap, the resource pack and the four-file distribution layout.
+The client library directory must contain `client-patched.jar`, `common.jar`, `javassist.jar` and `modlauncher.jar`. The updater build also needs its documented test libraries and JavaFX runtime. The verified release archive is written to `build/publication/`.
 
 ## License
 
-GNU GPL 3.0 or later: see [LICENSE](LICENSE). The earlier LGPL notice is retained in [lgpl-3.0.txt](lgpl-3.0.txt). Both texts are included inside the mod JAR under `META-INF/licenses/wurm-highres/`; embedded components retain their own notices.
+GNU GPL 3.0 or later. See [LICENSE](LICENSE). The mod JAR includes the GPL text, the earlier LGPL notice and embedded components' license notices.

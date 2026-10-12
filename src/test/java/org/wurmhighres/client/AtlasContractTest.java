@@ -26,7 +26,7 @@ public class AtlasContractTest {
         BufferedImage tools = readAtlas(project, packDirectory, "tools.png", 640, 384);
         BufferedImage weapons = readAtlas(project, packDirectory, "weapons.png", 640, 400);
 
-        int[] miscIds = {240, 241, 242, 251, 282, 291};
+        int[] miscIds = {240, 241, 242, 243, 244, 251, 282, 291};
         for (int id : miscIds) {
             assertCellVisible(misc, id);
         }
@@ -49,6 +49,9 @@ public class AtlasContractTest {
             assertCellEquals(armor, id, base);
         }
         assertCellVisible(resource, 520);
+        for (int id : new int[]{490, 491, 492, 510, 512}) {
+            assertCellVisible(resource, id);
+        }
         assertCellVisible(resource, 602);
         assertCellVisible(resource, 621);
         int[] anatomyIds = {495, 496, 498, 514, 515, 534, 535, 603};
@@ -58,7 +61,7 @@ public class AtlasContractTest {
         assertCellVisible(resource2, 1489);
 
         int[] toolIds = {738, 741, 742, 743, 745, 746, 747, 749, 750, 752, 753,
-                754, 755, 760, 766, 780, 802, 803, 820, 821, 823, 825, 882, 902};
+                754, 755, 760, 764, 766, 780, 784, 802, 803, 804, 820, 821, 823, 825, 882, 902};
         for (int id : toolIds) {
             assertCellVisible(tools, id);
         }
@@ -67,6 +70,9 @@ public class AtlasContractTest {
         assertCellVisible(weapons, 1207);
 
         String[] customMaterials = {
+                "frying-pan.png", "sauce-pan.png",
+                "buoy.png",
+                "gift.png", "gift-box.png", "chest.png", "tackle-box.png", "compartment.png",
                 "magic-water-skin.png", "santa-sack.png", "light-token.png",
                 "gland.png", "twisted-horn.png",
                 "hide.png", "leather.png",

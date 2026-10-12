@@ -18,7 +18,26 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class MaterialIconsTest {
+    @Test
+    public void buoyWoodTintKeepsLanternAndHoopsUntouched() throws Exception {
+        File directory = new File(projectDirectory(), "resource-pack/gui/custom/materials");
+        BufferedImage base = ImageIO.read(new File(directory, "buoy.png"));
+        BufferedImage mask = ImageIO.read(new File(directory, "buoy-mask.png"));
+        BufferedImage tinted = ShieldIcons.tint(base, mask, 0.25f, 1.8f, 0.3f);
+        for (int y : new int[]{6,12,16,22,28}) {
+            assertEquals("Buoy lantern/hoop selected at row " + y, 0, (mask.getRGB(16,y) >>> 16) & 255);
+            assertEquals("Buoy lantern/hoop tinted at row " + y, base.getRGB(16,y), tinted.getRGB(16,y));
+        }
+        for (int y : new int[]{19,25}) {
+            assertTrue("Buoy wood did not change", base.getRGB(16,y) != tinted.getRGB(16,y));
+            assertEquals(base.getRGB(16,y) >>> 24, tinted.getRGB(16,y) >>> 24);
+        }
+    }
+
     private static final String[] SLUGS = {
+            "bowl", "frying-pan", "sauce-pan", "cauldron",
+            "buoy",
+            "chest", "tackle-box", "compartment",
             "candelabra", "oil-lamp", "lamp", "hanging-lamp", "torch-lamp", "imperial-street-lamp",
             "praying-statuette", "chain", "butchering-knife", "fork", "spoon",
             "awl", "clay-shaper", "metal-brush", "grooming-brush", "knife",
@@ -80,6 +99,8 @@ public class MaterialIconsTest {
     @Test
     public void everySeryllArtworkResolvesForAllRaritiesAndServerIconIds() throws Exception {
         Object[][] tools = {
+                {764, "bowl", "bowl"}, {784, "frying pan", "frying-pan"},
+                {784, "sauce pan", "sauce-pan"}, {804, "cauldron", "cauldron"},
                 {251, "candelabra", "candelabra"},
                 {823, "oil lamp", "oil-lamp"}, {825, "lamp", "lamp"},
                 {825, "hanging lamp", "hanging-lamp"}, {825, "torch lamp", "torch-lamp"},
@@ -189,7 +210,7 @@ public class MaterialIconsTest {
         float[] colour = ShieldIcons.fallbackColour(MaterialUtilities.getMaterialString((byte) 67));
         for (String slug : new String[]{"praying-statuette", "chain", "fork", "spoon", "knife",
                 "crowbar", "scissors", "pliers", "small-anvil", "needle", "branding-iron",
-                "smelting-pot", "prayer-charm"}) {
+                "smelting-pot", "prayer-charm", "bowl", "frying-pan", "sauce-pan", "cauldron"}) {
             BufferedImage base = ImageIO.read(new File(directory, slug + ".png"));
             BufferedImage mask = ImageIO.read(new File(directory, slug + "-mask.png"));
             BufferedImage tinted = ShieldIcons.tint(base, mask, colour[0], colour[1], colour[2]);

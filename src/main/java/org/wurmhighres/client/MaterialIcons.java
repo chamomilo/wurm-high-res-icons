@@ -23,6 +23,8 @@ public final class MaterialIcons {
     private static final String RESOURCE_PREFIX = "img.wurmhighres.material.";
 
     private static final Asset[] ATLAS_ASSETS = {
+            metal(764, "bowl", "bowl"),
+            metal(804, "cauldron", "cauldron"),
             metal(251, "candelabra", "candelabra"),
             metal(823, "oil-lamp", "oil lamp", "brass oil lamp"),
             metal(825, "hanging-lamp", "hanging lamp"),
@@ -70,6 +72,12 @@ public final class MaterialIcons {
     };
 
     private static final Asset[] CUSTOM_ASSETS = {
+            customMetal(CookwareIcons.FRYING_PAN, "frying-pan", "frying pan"),
+            customMetal(CookwareIcons.SAUCE_PAN, "sauce-pan", "sauce pan"),
+            customWood(StorageIcons.BUOY, "buoy", "buoy"),
+            customWood(StorageIcons.CHEST, "chest", "chest", "small chest", "large chest"),
+            customMetal(StorageIcons.TACKLE_BOX, "tackle-box", "tackle box"),
+            customWood(StorageIcons.COMPARTMENT, "compartment", "compartment"),
             customMetal("img.wurmhighres.brandingiron", "branding-iron", "branding iron"),
             customMetal("img.wurmhighres.smeltingpot", "smelting-pot", "smelting pot"),
             customWood("img.wurmhighres.smallbarrel", "small-barrel"),
@@ -382,8 +390,8 @@ public final class MaterialIcons {
         return new Asset((short) -1, resource, slug, Family.METAL, names);
     }
 
-    private static Asset customWood(String resource, String slug) {
-        return new Asset((short) -1, resource, slug, Family.WOOD);
+    private static Asset customWood(String resource, String slug, String... names) {
+        return new Asset((short) -1, resource, slug, Family.WOOD, names);
     }
 
     private enum Family {

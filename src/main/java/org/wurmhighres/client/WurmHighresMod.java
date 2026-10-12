@@ -18,13 +18,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class WurmHighresMod implements org.gotti.wurmunlimited.modloader.interfaces.ModListener, WurmClientMod, Configurable, PreInitable, Initable {
-    public static final String VERSION = "0.1.39";
+    public static final String VERSION = "0.2.0";
     @Override public String getVersion() { return VERSION; }
 
     private static final Logger LOGGER = Logger.getLogger(WurmHighresMod.class.getName());
 
     @Override
     public void configure(Properties properties) {
+        properties = org.chamomilo.wurm.update.SharedModSettings.configure("wurm-highres",properties,
+                ModSettingsSchema.specs(),(key,values) -> WurmHighresSettings.configure(values));
         WurmHighresSettings.configure(properties);
     }
 
@@ -33,22 +35,18 @@ public final class WurmHighresMod implements org.gotti.wurmunlimited.modloader.i
         org.chamomilo.wurm.update.SharedUpdateHooks.install();
         try {
             ClassPool pool = HookManager.getInstance().getClassPool();
-            if (WurmHighresSettings.replaceIcons) {
+            {
                 installResourcePackHook(pool);
                 installCustomIconHooks(pool);
             }
-            if (WurmHighresSettings.replaceIcons
-                    || WurmHighresSettings.rarityGlow
-                    || WurmHighresSettings.rarityBackground) {
+            {
                 installItemIconHooks(pool);
             }
-            if (WurmHighresSettings.rarityGlow || WurmHighresSettings.rarityBackground) {
+            {
                 installInventoryHooks(pool);
                 installToolbeltHooks(pool);
             }
-            if (WurmHighresSettings.rarityGlow
-                    || WurmHighresSettings.rarityBackground
-                    || (WurmHighresSettings.replaceIcons && WurmHighresSettings.magicShimmer)) {
+            {
                 installPaperDollHook(pool);
             }
             LOGGER.info("wurm-highres bytecode hooks installed");

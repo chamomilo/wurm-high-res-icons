@@ -68,6 +68,14 @@ public final class IconOverrides {
             return icon(magicalResource, original);
         }
         String baseName = item.getBaseName();
+        String cookwareResource = CookwareIcons.resource(item.getType(), baseName, null);
+        if (cookwareResource != null) {
+            return materialIcon(cookwareResource, item.getMaterialId(), original);
+        }
+        String storageResource = StorageIcons.resource(item.getType(), baseName, null);
+        if (storageResource != null) {
+            return materialIcon(storageResource, item.getMaterialId(), original);
+        }
         String lightResource = lightingResource(item.getType(), baseName);
         if (lightResource != null) {
             return icon(lightResource, original);
@@ -112,6 +120,14 @@ public final class IconOverrides {
     public static Texture overrideByName(String name, Texture original) {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
+        }
+        String cookwareResource = CookwareIcons.byName(name);
+        if (cookwareResource != null) {
+            return materialIcon(cookwareResource, name, original);
+        }
+        String storageResource = StorageIcons.byName(name);
+        if (storageResource != null) {
+            return materialIcon(storageResource, name, original);
         }
         if (isLightTokenName(name)) {
             return icon(LIGHT_TOKEN_RESOURCE, original);
@@ -159,6 +175,14 @@ public final class IconOverrides {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
         }
+        String storageResource = StorageIcons.resource(iconId, name, null);
+        String cookwareResource = CookwareIcons.resource(iconId, name, null);
+        if (cookwareResource != null) {
+            return materialIcon(cookwareResource, name, original);
+        }
+        if (storageResource != null) {
+            return materialIcon(storageResource, name, original);
+        }
         if (iconId == 823 || iconId == 825) {
             String resource = MaterialIcons.baseResource(iconId, name);
             if (resource != null) {
@@ -181,7 +205,16 @@ public final class IconOverrides {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
         }
-        String descriptor = name + " " + groundDescriptor(groundItemId);
+        String modelDescriptor = groundDescriptor(groundItemId);
+        String descriptor = name + " " + modelDescriptor;
+        String cookwareResource = CookwareIcons.resource(iconId, name, modelDescriptor);
+        if (cookwareResource != null) {
+            return materialIcon(cookwareResource, descriptor, original);
+        }
+        String storageResource = StorageIcons.resource(iconId, name, modelDescriptor);
+        if (storageResource != null) {
+            return materialIcon(storageResource, descriptor, original);
+        }
         if (iconId == 823 || iconId == 825) {
             String resource = MaterialIcons.baseResource(iconId, descriptor);
             if (resource != null) {
@@ -234,6 +267,8 @@ public final class IconOverrides {
 
     static boolean hasCustomIcon(String baseName) {
         return ShieldIcons.recognizesName(baseName)
+                || StorageIcons.byName(baseName) != null
+                || CookwareIcons.byName(baseName) != null
                 || isLightTokenName(baseName)
                 || magicalContainerResource(baseName) != null
                 || isCarvingKnife(baseName)
