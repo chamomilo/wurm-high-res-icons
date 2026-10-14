@@ -35,6 +35,9 @@ public class MaterialIconsTest {
     }
 
     private static final String[] SLUGS = {
+            "old-fine-fishing-hook",
+            "small-lock", "large-lock", "hooks", "eyelet",
+            "large-nails", "small-nails", "key", "lock-picks", "rivets",
             "bowl", "frying-pan", "sauce-pan", "cauldron",
             "buoy",
             "chest", "tackle-box", "compartment",
@@ -78,6 +81,31 @@ public class MaterialIconsTest {
     }
 
     @Test
+    public void inventoryHardwareKeepsSizeAndArtifactIdentity() throws Exception {
+        InventoryMetaItem large = item(781, "Rare large seryll nails", 67);
+        set(large, "customName", "small nails");
+        set(large, "hoverText", "small nails copper");
+        assertEquals("img.wurmhighres.material.large.nails", MaterialIcons.inventoryBaseResource(large));
+        assertEquals("img.wurmhighres.material.small.nails",
+                MaterialIcons.inventoryBaseResource(item(781, "small iron nails", 11)));
+        assertEquals("img.wurmhighres.material.key",
+                MaterialIcons.inventoryBaseResource(item(789, "key", 11)));
+        assertNull(MaterialIcons.inventoryBaseResource(item(789, "key of the heavens", 7)));
+        // The artifact keeps its painted gold and ruby colours instead of applying a metal tint.
+        assertNull(MaterialIcons.inventoryBaseResource(item(789, "Rare key of the heavens, gold", 7)));
+        assertEquals("img.wurmhighres.material.key", MaterialIcons.inventoryBaseResource(item(809, "key copy", 10)));
+        assertEquals("img.wurmhighres.material.small.lock", MaterialIcons.inventoryBaseResource(item(790, "boat lock", 11)));
+        assertEquals("img.wurmhighres.material.large.lock", MaterialIcons.inventoryBaseResource(item(790, "gate lock", 11)));
+        assertEquals("img.wurmhighres.material.hooks", MaterialIcons.inventoryBaseResource(item(845, "hooks", 11)));
+        assertEquals("img.wurmhighres.material.eyelet", MaterialIcons.inventoryBaseResource(item(1488, "eyelet", 11)));
+        assertEquals("img.wurmhighres.material.old.fine.fishing.hook",
+                MaterialIcons.inventoryBaseResource(item(785, "old fine fishing hook", 11)));
+        assertNull(MaterialIcons.inventoryBaseResource(item(343, "fish keep net", 17)));
+        assertNull(MaterialIcons.inventoryBaseResource(item(620, "basic fishing line", 17)));
+        assertNull(MaterialIcons.inventoryBaseResource(item(785, "metal fishing hook", 11)));
+    }
+
+    @Test
     public void materialSpecificServerToolsUseTheSameNeutralArtwork() throws Exception {
         for (String name : new String[]{"pickaxe", "seryll pickaxe", "pickaxe, seryll", "pick axe",
                 "Rare pickaxe, seryll", "Supreme seryll pickaxe", "Fantastic pickaxe, seryll"}) {
@@ -99,6 +127,9 @@ public class MaterialIconsTest {
     @Test
     public void everySeryllArtworkResolvesForAllRaritiesAndServerIconIds() throws Exception {
         Object[][] tools = {
+                {785, "old fine fishing hook", "old-fine-fishing-hook"},
+                {790, "door lock", "small-lock"}, {790, "gate lock", "large-lock"},
+                {809, "key copy", "key"}, {845, "hooks", "hooks"}, {1488, "eyelet", "eyelet"},
                 {764, "bowl", "bowl"}, {784, "frying pan", "frying-pan"},
                 {784, "sauce pan", "sauce-pan"}, {804, "cauldron", "cauldron"},
                 {251, "candelabra", "candelabra"},
@@ -209,6 +240,7 @@ public class MaterialIconsTest {
         File directory = new File(projectDirectory(), "resource-pack/gui/custom/materials");
         float[] colour = ShieldIcons.fallbackColour(MaterialUtilities.getMaterialString((byte) 67));
         for (String slug : new String[]{"praying-statuette", "chain", "fork", "spoon", "knife",
+                "old-fine-fishing-hook",
                 "crowbar", "scissors", "pliers", "small-anvil", "needle", "branding-iron",
                 "smelting-pot", "prayer-charm", "bowl", "frying-pan", "sauce-pan", "cauldron"}) {
             BufferedImage base = ImageIO.read(new File(directory, slug + ".png"));

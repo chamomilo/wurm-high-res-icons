@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.wurmhighres'
-version = '0.2.0'
+version = '0.2.5'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -89,6 +89,8 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'org/wurmhighres/client/IconOverrides.class',
                 'org/wurmhighres/client/StorageIcons.class',
                 'org/wurmhighres/client/CookwareIcons.class',
+                'org/wurmhighres/client/HardwareIcons.class',
+                'org/wurmhighres/client/FishingIcons.class',
                 'org/wurmhighres/client/ModSettingsSchema.class',
                 'org/wurmhighres/client/MaterialIcons.class',
                 'org/wurmhighres/client/ShieldIcons.class',
@@ -151,6 +153,9 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
         } finally { modZip.close() }
 
         def materialIconSlugs = [
+                'old-fine-fishing-hook',
+                'small-lock', 'large-lock', 'hooks', 'eyelet',
+                'large-nails', 'small-nails', 'key', 'lock-picks', 'rivets',
                 'bowl', 'frying-pan', 'sauce-pan', 'cauldron',
                 'buoy',
                 'chest', 'tackle-box', 'compartment',
@@ -214,6 +219,13 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
              'gui/custom/tackle-box.png', 'gui/custom/compartment.png',
              'gui/custom/buoy.png',
              'gui/custom/frying-pan.png', 'gui/custom/sauce-pan.png',
+             'gui/custom/large-nails.png', 'gui/custom/small-nails.png',
+             'gui/custom/key.png', 'gui/custom/lock-picks.png', 'gui/custom/rivets.png',
+             'gui/custom/key-of-the-heavens.png',
+             'gui/custom/small-lock.png', 'gui/custom/large-lock.png',
+             'gui/custom/hooks.png', 'gui/custom/eyelet.png',
+             'gui/custom/fish-keep-net.png', 'gui/custom/modern-fishing-line.png',
+             'gui/custom/old-fine-fishing-hook.png',
              'gui/tools.png', 'gui/weapons.png',
              'gui/custom/carving-knife.png',
              'gui/custom/prayer-charm.png',

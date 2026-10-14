@@ -72,6 +72,17 @@ public final class MaterialIcons {
     };
 
     private static final Asset[] CUSTOM_ASSETS = {
+            customMetal(FishingIcons.OLD_FINE_HOOK, "old-fine-fishing-hook", "old fine fishing hook"),
+            customMetal(HardwareIcons.LARGE_NAILS, "large-nails", "large nails", "nails large"),
+            customMetal(HardwareIcons.SMALL_NAILS, "small-nails", "small nails", "nails small"),
+            customMetal(HardwareIcons.KEY, "key", "key", "keys"),
+            customMetal(HardwareIcons.KEY_COPY, "key", "key copy"),
+            customMetal(HardwareIcons.SMALL_LOCK, "small-lock", "door lock", "small padlock", "boat lock"),
+            customMetal(HardwareIcons.LARGE_LOCK, "large-lock", "large padlock", "gate lock"),
+            customMetal(HardwareIcons.HOOKS, "hooks", "hooks", "hook"),
+            customMetal(HardwareIcons.EYELET, "eyelet", "eyelet"),
+            customMetal(HardwareIcons.LOCK_PICKS, "lock-picks", "lock picks", "lock pick"),
+            customMetal(HardwareIcons.RIVETS, "rivets", "rivets", "rivet"),
             customMetal(CookwareIcons.FRYING_PAN, "frying-pan", "frying pan"),
             customMetal(CookwareIcons.SAUCE_PAN, "sauce-pan", "sauce pan"),
             customWood(StorageIcons.BUOY, "buoy", "buoy"),
@@ -110,6 +121,10 @@ public final class MaterialIcons {
     }
 
     private static Asset inventoryAsset(InventoryMetaItem item) {
+        String fishing = FishingIcons.resource(item.getType(), item.getBaseName(), null);
+        if (fishing != null) return customAsset(fishing);
+        String hardware = HardwareIcons.resource(item.getType(), item.getBaseName(), null);
+        if (hardware != null) return customAsset(hardware);
         // Servers can assign a separate atlas cell to a material-specific tool.
         // Use only the server's base name here: hover text and player names can
         // mention other tools. Resolve custom artwork before shared atlas cells

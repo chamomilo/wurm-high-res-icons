@@ -1,13 +1,13 @@
-WURM HIGH-RES ICONS 0.2.0
+WURM HIGH-RES ICONS 0.2.5
 By Chamomilo
 
-Detailed item icons, material colours and animated rarity effects for the
+Detailed item artwork, material colours and animated rarity effects for the
 Wurm Unlimited client.
 
-Illustrated README:
-https://github.com/chamomilo/wurm-high-res-icons#readme
-Downloads:
-https://github.com/chamomilo/wurm-high-res-icons/releases/latest
+Illustrated README and support:
+https://github.com/chamomilo/wurm-high-res-icons
+Release:
+https://github.com/chamomilo/wurm-high-res-icons/releases/tag/v0.2.5
 Issues:
 https://github.com/chamomilo/wurm-high-res-icons/issues
 
@@ -19,63 +19,68 @@ https://github.com/ago1024/WurmClientModLauncher/releases
 1. Close the game client.
 2. Extract this ZIP into your WurmLauncher folder. Preserve the mods structure.
 3. Replace the configuration or merge your custom values into the new file.
-4. Start the client through Client ModLauncher.
+4. Remove the previous version's two wurm-highres JARs from mods/wurm-highres.
+5. Start the client through Client ModLauncher.
 
 ZIP CONTENTS
 
 README.txt
 mods/wurm-highres.properties
-mods/wurm-highres/wurm-highres-0.2.0.jar
-mods/wurm-highres/wurm-highres-resources-0.2.0.jar
+mods/wurm-highres/wurm-highres-0.2.5.jar
+mods/wurm-highres/wurm-highres-resources-0.2.5.jar
 
 FEATURES
 
-Detailed 32 x 32 artwork in Inventory, Toolbelt, Equipment and Creation/Build.
-Separate icons for supported gifts, containers, lamps and cookware.
-Material colours for tools, shields and other supported items.
+Detailed 32 x 32 icons in Inventory, Toolbelt, Equipment and Creation/Build.
+Separate images for supported shared-icon items, including gifts, containers,
+lamps, cookware, keys, lock sizes, nail sizes and fishing equipment.
+Material colours preserve wooden handles, glass, wax and other details.
 Individual drake-hide and dragon-scale colours.
 Animated rare, supreme and fantastic highlights, with blob or star effects.
 Rainbow shimmer for magic water skins and Santa sacks.
+Client-side operation; no server installation required.
 
-WHAT'S NEW IN 0.2.0
+WHAT'S NEW
 
-The shared Mods Registry provides an in-game Settings editor with hover help,
-validated saves and immediate application where supported. Startup-only edits
-show a restart notice and offer Wurm's normal quit confirmation.
+Includes the redesigned keys, nails, locks, hooks, eyelet and fishing equipment.
+Key of the heavens keeps its polished gold and three ruby inlays. Five modern
+fishing lines share one wooden spool; old fine fishing hook has a separate
+eye, sharp point and barb. Other shared-icon items retain their own artwork.
 
-Redesigned gifts, containers, buoy, clay vessels and cookware preserve their
-game designs with smooth rounded contours. Frying pan and sauce pan have
-distinct shallow and deep profiles in Inventory, recipes and ground Build
-slots. Metal masks apply the established material palette.
-
-Includes Chamomilo updater 1.5.0 and Chamomilo UI 0.4.11.
-The Mod updates menu opens the shared registry after HUD startup.
-DOWNLOAD opens the release page. Install ZIP updates manually.
+Includes the current Chamomilo updater 1.5.0 and Chamomilo UI 0.4.11, with the
+shared Settings editor. DOWNLOAD opens the release page. Install updates
+manually with the client closed.
 
 SETTINGS
 
-Open Mod updates, then Settings on the High Res Icons card. Valid edits are
-saved automatically. The editor follows the shared language selection.
-Alternatively, edit mods/wurm-highres.properties while the client is closed.
+Open Mod updates after the HUD appears, find High Res Icons, then choose
+Settings. Each setting has hover help. Valid edits are saved automatically;
+live settings apply during play. The shared language selector supports English,
+Brazilian Portuguese, German and Russian.
 
 replaceIcons=true       Replacement item artwork.
-rarityGlow=true         Rare, supreme and fantastic highlights.
-rarityBackground=false Coloured background behind rare items.
+magicShimmer=true       Magic water skin and Santa sack shimmer.
+rarityGlow=true         Rare-item glow.
+rarityBackground=false Coloured background beneath rare items.
 rarityAnimation=blob   Choose blob or star.
 pulseGlow=true          Animate the glow.
-magicShimmer=true       Magic water skin and Santa sack shimmer.
-glowRadius=3           Glow width in pixels.
-glowAlpha=0.48          Glow opacity.
-backgroundAlpha=0.16   Background opacity.
+glowRadius=3           Glow width: 1 to 4 pixels.
+glowAlpha=0.48          Glow opacity: 0 to 1.
+backgroundAlpha=0.16   Background opacity: 0 to 1.
 rareColor=66,153,224
 supremeColor=0,255,255
 fantasticColor=255,0,255
 
-Colours accept RGB values or #RRGGBB. The resourcePack path must match the
-installed resource JAR; changing it requires a restart.
+Colours accept RGB channels or #RRGGBB. The resourcePack path must match the
+installed resource JAR; changing it requires a restart. The editor offers
+Wurm's normal quit confirmation after saving valid restart changes.
+
+Saved editor overrides are in your user profile:
+.chamomilo/mod-settings/wurm-highres.properties
+They survive mod updates. Unedited settings keep the new version's defaults.
+You can also edit mods/wurm-highres.properties with the client closed.
 
 LICENSE
 
-GNU GPL 3.0 or later. The GPL text and earlier LGPL notice are included inside
-wurm-highres-0.2.0.jar under META-INF/licenses/wurm-highres/.
-Embedded components retain their own license notices.
+GNU GPL 3.0 or later. The GPL text, earlier LGPL notice and embedded components'
+license notices are included inside the mod JAR.

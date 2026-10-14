@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.2.5 — 2026-10-15
+
+- Publish the redesigned hardware, keys, locks and fishing equipment, including distinct nail and lock sizes, the gold-and-ruby Key of the heavens, a common spool for five fishing lines and a separate old fine fishing hook.
+- Include the current complete Chamomilo updater 1.5.0 and Chamomilo UI 0.4.11 with the shared Settings editor.
+- Verify settings persistence, immediate runtime updates and restart-only resource pack changes through the product integration.
+- Replace the illustrated README and refresh installation and settings documentation. The installable ZIP contains only the two runtime JARs, configuration and README.txt.
+
+## 0.2.4 — 2026-10-15
+
+- Redesign fish keep net and one common spool for basic, light, medium, heavy and braided fishing line from their game models.
+- Give old fine fishing hook a separate real-hook silhouette with an eye, sharp point and barb, and apply the established metal palette.
+- Select fishing artwork in Inventory, recipes and ground Build slots while preserving shared string, yarn, metal-hook and old-line neighbours. Ambiguous renamed hooks retain their existing icon because both hook types share a model.
+
+## 0.2.3 — 2026-10-14
+
+- Finish the lock and hardware batch: two lock sizes, copper key copy, hooks and eyelet, together with the existing gold-and-ruby Key of the heavens.
+- Redraw hooks directly from the original game icon, preserving its curved S-shaped silhouette. Smooth the approved game designs for the remaining items.
+- Select the five lock types through their two shared model groups in Inventory, recipes and ground Build slots. Preserve the small-to-large size relationship and apply the established metal palette.
+
+## 0.2.2 — 2026-10-14
+
+- Give Key of the heavens a separate polished gold key icon with three ruby inlays, based on the same key shape as Key copy.
+- Preserve the artifact's gold and gemstone colours in Inventory, recipes and ground Build slots while keeping ordinary key artwork independent.
+
+## 0.2.1 — 2026-10-14
+
+- Redesign the clay key mould, fired key form, lock picks, rivets, ordinary key and both nail sizes from approved game references.
+- Give large nails longer, slimmer shafts relative to their heads so they remain distinct from short nails at 16/32 px.
+- Select large and small nail artwork in inventory, recipes and ground Build slots. Keep the ordinary key separate from Key of the heavens.
+- Apply the established metal palette through five complete masks.
+
 ## 0.2.0 — 2026-10-13
 
 - Add the native Settings editor in the shared Mods Registry, with hover help, validated saves, immediate application where supported and restart notices for startup-only options.
