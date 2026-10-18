@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class WurmHighresMod implements org.gotti.wurmunlimited.modloader.interfaces.ModListener, WurmClientMod, Configurable, PreInitable, Initable {
-    public static final String VERSION = "0.2.5";
+    public static final String VERSION = "0.2.13";
     @Override public String getVersion() { return VERSION; }
 
     private static final Logger LOGGER = Logger.getLogger(WurmHighresMod.class.getName());

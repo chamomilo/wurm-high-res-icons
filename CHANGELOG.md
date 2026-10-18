@@ -1,5 +1,55 @@
 # Changelog
 
+## 0.2.13 — 2026-10-18
+
+- Publish the completed fishing, tool-part, training and weapon artwork from 0.2.6–0.2.12.
+- Clean-build and verify the complete current Chamomilo updater 1.5.0 with its pinned UI 0.4.11.
+- Check every source resource against its packaged bytes, every mapped image path, runtime PNG dimensions and duplicate JAR entries before packaging.
+- Rewrite the illustrated README using actual runtime icons; collect public previews under `docs/renders` and keep technical review sheets outside the product repository.
+- Keep the installable ZIP limited to the descriptor, two runtime JARs and README.txt.
+
+## 0.2.12 — 2026-10-18
+
+- Add 24 separate tool-part, training, weapon and ammunition artworks, with matching finished tools and parts.
+- Redraw the assembled sickle and its blade to follow the actual game model and leather-wrapped grip.
+- Separate three axe heads, two mauls with matching heads, and strung/unstrung short-bow artwork; preserve fixed grips, feathers, target rings and metal inlays under material colouring.
+- Resolve shared sizes by ground model or exact standard inventory weight. When the client provides no distinguishing bow marker or only an ambiguous shared recipe name, retain its existing icon.
+
+## 0.2.11 — 2026-10-18
+
+- Match mallet, hammer and pickaxe heads to the approved completed tools, preserving their proportions and empty handle eyes.
+- Match both shovel-blade materials to the completed shovel's outline, central rib and short socket.
+- Complete the seven tool-part alignments and check 16/32 px silhouettes, twelve metal colours and wood variants.
+
+## 0.2.10 — 2026-10-18
+
+- Separate the leatherworking knife (template 392, icon 766) from the ordinary cutlery knife (template 258, icon 940).
+- Add a short hooked leatherworking knife and matching separate blade/head, preserving wood and leather under metal recolouring.
+- Correct stone chisel to the all-metal stone-cutting tool and match its separate blade to that design.
+
+## 0.2.9 — 2026-10-18
+
+- Align the rake-head icon with the approved assembled rake: six broad teeth with clear gaps and the matching metal shaft socket.
+- Check tool-part references against completed tool artwork and refresh 16/32 px previews.
+
+## 0.2.8 — 2026-10-18
+
+- Redesign seven unfinished tool parts from game models: chisel and leather-knife blades, mallet, hammer and pickaxe heads, rake head and shovel blade.
+- Give the wooden shovel template its own wood base with the same geometry; use eight whole-part masks for the established wood and metal palettes.
+- Resolve shared blade icons and renamed ground parts by model, preserving assembled tools and crude stone parts.
+
+## 0.2.7 — 2026-10-18
+
+- Add twelve separate fishing icons: old and wooden hooks, bone hook, modern rod, landing net, three reel components and four assembled reels.
+- Match reel types and materials to their game descriptions; preserve cotton line, stone and leather with ten material masks.
+- Resolve exact item types in Inventory, recipes and ground Build slots. Keep existing artwork for ambiguous renamed shared hooks and reel components.
+
+## 0.2.6 — 2026-10-18
+
+- Add seven separate old-fishing icons for both lines, the metal hook and four rods/poles. Ordinary old rods share a long smooth tapered stick without/with line; the fine rod represents good quality.
+- Select the exact artwork in Inventory, recipes and ground Build slots, retaining the original icon for ambiguous renamed hooks/lines.
+- Add semantic metal/wood masks that preserve cotton, stone and fixed fittings, and refine fishing-line thickness for 16/32 px readability.
+
 ## 0.2.5 — 2026-10-15
 
 - Publish the redesigned hardware, keys, locks and fishing equipment, including distinct nail and lock sizes, the gold-and-ruby Key of the heavens, a common spool for five fishing lines and a separate old fine fishing hook.

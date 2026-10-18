@@ -42,7 +42,6 @@ public class IconOverridesTest {
 
     @Test
     public void otherItemsKeepTheirStockTexture() {
-        assertFalse(IconOverrides.hasCustomIcon("stone chisel"));
         assertFalse(IconOverrides.hasCustomIcon("butchering knife"));
         assertFalse(IconOverrides.hasCustomIcon("chain"));
         assertFalse(IconOverrides.hasCustomIcon("prayer charmed pendant"));

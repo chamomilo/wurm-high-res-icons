@@ -68,6 +68,16 @@ public final class IconOverrides {
             return icon(magicalResource, original);
         }
         String baseName = item.getBaseName();
+        String workshopResource = WorkshopIcons.inventoryResource(item);
+        if (workshopResource != null) return materialIcon(workshopResource, item.getMaterialId(), original);
+        String cuttingResource = CuttingToolIcons.resource(item.getType(), baseName, null);
+        if (cuttingResource != null) {
+            return materialIcon(cuttingResource, item.getMaterialId(), original);
+        }
+        String partResource = ToolPartIcons.inventoryResource(item.getType(), baseName, item.getMaterialId());
+        if (partResource != null) {
+            return materialIcon(partResource, item.getMaterialId(), original);
+        }
         String fishingResource = FishingIcons.resource(item.getType(), baseName, null);
         if (fishingResource != null) {
             return materialIcon(fishingResource, item.getMaterialId(), original);
@@ -128,6 +138,16 @@ public final class IconOverrides {
     public static Texture overrideByName(String name, Texture original) {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
+        }
+        String workshopResource = WorkshopIcons.byName(name);
+        if (workshopResource != null) return materialIcon(workshopResource, name, original);
+        String cuttingResource = CuttingToolIcons.byName(name);
+        if (cuttingResource != null) {
+            return materialIcon(cuttingResource, name, original);
+        }
+        String partResource = ToolPartIcons.byName(name);
+        if (partResource != null) {
+            return materialIcon(partResource, name, original);
         }
         String fishingResource = FishingIcons.byName(name);
         if (fishingResource != null) {
@@ -191,6 +211,16 @@ public final class IconOverrides {
         if (!WurmHighresSettings.replaceIcons) {
             return original;
         }
+        String workshopResource = WorkshopIcons.resource(iconId, name, null);
+        if (workshopResource != null) return materialIcon(workshopResource, name, original);
+        String cuttingResource = CuttingToolIcons.resource(iconId, name, null);
+        if (cuttingResource != null) {
+            return materialIcon(cuttingResource, name, original);
+        }
+        String partResource = ToolPartIcons.resource(iconId, name, null);
+        if (partResource != null) {
+            return materialIcon(partResource, name, original);
+        }
         String fishingResource = FishingIcons.resource(iconId, name, null);
         if (fishingResource != null) {
             return materialIcon(fishingResource, name, original);
@@ -231,6 +261,16 @@ public final class IconOverrides {
         }
         String modelDescriptor = groundDescriptor(groundItemId);
         String descriptor = name + " " + modelDescriptor;
+        String workshopResource = WorkshopIcons.resource(iconId, name, modelDescriptor);
+        if (workshopResource != null) return materialIcon(workshopResource, descriptor, original);
+        String cuttingResource = CuttingToolIcons.resource(iconId, name, modelDescriptor);
+        if (cuttingResource != null) {
+            return materialIcon(cuttingResource, descriptor, original);
+        }
+        String partResource = ToolPartIcons.resource(iconId, name, modelDescriptor);
+        if (partResource != null) {
+            return materialIcon(partResource, descriptor, original);
+        }
         String fishingResource = FishingIcons.resource(iconId, name, modelDescriptor);
         if (fishingResource != null) {
             return materialIcon(fishingResource, descriptor, original);
@@ -303,6 +343,9 @@ public final class IconOverrides {
                 || CookwareIcons.byName(baseName) != null
                 || HardwareIcons.byName(baseName) != null
                 || FishingIcons.byName(baseName) != null
+                || WorkshopIcons.byName(baseName) != null
+                || ToolPartIcons.byName(baseName) != null
+                || CuttingToolIcons.byName(baseName) != null
                 || isLightTokenName(baseName)
                 || magicalContainerResource(baseName) != null
                 || isCarvingKnife(baseName)

@@ -40,7 +40,7 @@ public final class MaterialIcons {
             wood(802, "clay-shaper", "clay shaper"),
             metal(882, "metal-brush", "metal brush"),
             wood(902, "grooming-brush", "grooming brush"),
-            metal(940, "knife", "knife", "leather knife"),
+            metal(940, "knife", "knife"),
             metal(1201, "stone-chisel", "stone chisel", "chisel"),
             metal(738, "crowbar", "crowbar"),
             wood(741, "mallet", "mallet"),
@@ -72,6 +72,58 @@ public final class MaterialIcons {
     };
 
     private static final Asset[] CUSTOM_ASSETS = {
+            customMetal("img.wurmhighres.workshop.scissor.blade", "scissor-blade", "scissor blade"),
+            customMetal("img.wurmhighres.workshop.file.blade", "file-blade", "file blade"),
+            customMetal("img.wurmhighres.workshop.trowel.blade", "trowel-blade", "trowel blade"),
+            customMetal("img.wurmhighres.workshop.sickle.blade", "sickle-blade", "sickle blade"),
+            customMetal("img.wurmhighres.workshop.scythe.blade", "scythe-blade", "scythe blade"),
+            customMetal("img.wurmhighres.workshop.awl.blade", "awl-blade", "awl blade"),
+            customMetal("img.wurmhighres.workshop.butchering.knife.blade", "butchering-knife-blade", "butchering knife blade"),
+            customWood("img.wurmhighres.workshop.archery.target", "archery-target", "archery target"),
+            customWood("img.wurmhighres.workshop.practice.doll", "practice-doll", "practice doll"),
+            customMetal("img.wurmhighres.workshop.carving.knife.blade", "carving-knife-blade", "carving knife blade"),
+            customMetal("img.wurmhighres.workshop.short.sword.blade", "short-sword-blade", "short sword blade"),
+            customMetal("img.wurmhighres.workshop.short.sword", "short-sword", "short sword"),
+            customMetal("img.wurmhighres.workshop.hatchet.head", "hatchet-head", "hatchet head"),
+            customMetal("img.wurmhighres.workshop.small.axe.head", "small-axe-head", "small axe head"),
+            customMetal("img.wurmhighres.workshop.medium.axe.head", "medium-axe-head", "medium axe head"),
+            customMetal("img.wurmhighres.workshop.small.maul.head", "small-maul-head", "small maul head"),
+            customMetal("img.wurmhighres.workshop.medium.maul.head", "medium-maul-head", "medium maul head"),
+            customMetal("img.wurmhighres.workshop.small.maul", "small-maul", "small maul"),
+            customMetal("img.wurmhighres.workshop.medium.maul", "medium-maul", "medium maul"),
+            customWood("img.wurmhighres.workshop.short.bow", "short-bow", "strung short bow", "short bow with string"),
+            customWood("img.wurmhighres.workshop.short.bow.unstrung", "short-bow-unstrung", "unstrung short bow", "unstringed short bow", "short bow unstrung", "short bow without string"),
+            customWood("img.wurmhighres.workshop.war.arrow", "war-arrow", "war arrow"),
+            customMetal("img.wurmhighres.workshop.war.arrow.head", "war-arrow-head", "war arrow head"),
+            customMetal("img.wurmhighres.workshop.spear.tip", "spear-tip", "spear tip"),
+            customMetal("img.wurmhighres.workshop.sickle", "sickle", "sickle"),
+            customMetal(CuttingToolIcons.LEATHER_KNIFE, "leather-knife", "leather knife"),
+            customMetal(CuttingToolIcons.STONE_CHISEL, "stone-chisel", "stone chisel"),
+            customMetal("img.wurmhighres.toolpart.chisel.blade", "chisel-blade", "chisel blade"),
+            customMetal("img.wurmhighres.toolpart.leather.knife.blade", "leather-knife-blade", "leather knife blade", "leather knife head"),
+            customWood("img.wurmhighres.toolpart.mallet.head", "mallet-head", "mallet head"),
+            customMetal("img.wurmhighres.toolpart.hammer.head", "hammer-head", "hammer head"),
+            customMetal("img.wurmhighres.toolpart.pickaxe.head", "pickaxe-head", "pickaxe head"),
+            customMetal("img.wurmhighres.toolpart.rake.blade", "rake-blade", "rake blade"),
+            customMetal("img.wurmhighres.toolpart.shovel.blade", "shovel-blade", "shovel blade"),
+            customWood(ToolPartIcons.WOODEN_SHOVEL, "shovel-blade-wood", "shovel blade", "wooden shovel blade"),
+            customWood(FishingIcons.OLD_HOOK, "old-fishing-hook", "old fishing hook"),
+            customWood(FishingIcons.WOOD_HOOK, "wooden-fishing-hook", "wooden fishing hook"),
+            customWood(FishingIcons.ROD, "fishing-rod", "fishing rod"),
+            customWood(FishingIcons.WOOD_REEL, "wood-reel", "wood reel"),
+            customMetal(FishingIcons.METAL_REEL, "metal-reel", "metal reel"),
+            customMetal(FishingIcons.PRO_REEL, "professional-reel", "professional reel"),
+            customWood(FishingIcons.LIGHT_REEL, "light-fishing-reel", "light fishing reel"),
+            customWood(FishingIcons.MEDIUM_REEL, "medium-fishing-reel", "medium fishing reel"),
+            customMetal(FishingIcons.DEEP_REEL, "deep-water-fishing-reel", "deep water fishing reel"),
+            customMetal(FishingIcons.PRO_FISH_REEL, "professional-fishing-reel", "professional fishing reel"),
+            customMetal(FishingIcons.METAL_HOOK, "metal-fishing-hook", "metal fishing hook"),
+            customMetal(FishingIcons.OLD_FINE_LINE, "old-fine-fishing-line", "old fine fishing line"),
+            customWood(FishingIcons.OLD_LINE, "old-fishing-line", "old fishing line"),
+            customWood(FishingIcons.OLD_FINE_ROD, "old-fine-fishing-rod", "old fine fishing rod"),
+            customWood(FishingIcons.OLD_UNSTRUNG_ROD, "old-unstrung-fishing-rod", "old unstrung fishing rod"),
+            customWood(FishingIcons.OLD_ROD, "old-fishing-rod", "old fishing rod"),
+            customWood(FishingIcons.POLE, "fishing-pole", "fishing pole"),
             customMetal(FishingIcons.OLD_FINE_HOOK, "old-fine-fishing-hook", "old fine fishing hook"),
             customMetal(HardwareIcons.LARGE_NAILS, "large-nails", "large nails", "nails large"),
             customMetal(HardwareIcons.SMALL_NAILS, "small-nails", "small nails", "nails small"),
@@ -121,6 +173,12 @@ public final class MaterialIcons {
     }
 
     private static Asset inventoryAsset(InventoryMetaItem item) {
+        String workshop = WorkshopIcons.inventoryResource(item);
+        if (workshop != null) return customAsset(workshop);
+        String cutting = CuttingToolIcons.resource(item.getType(), item.getBaseName(), null);
+        if (cutting != null) return customAsset(cutting);
+        String part = ToolPartIcons.inventoryResource(item.getType(), item.getBaseName(), item.getMaterialId());
+        if (part != null) return customAsset(part);
         String fishing = FishingIcons.resource(item.getType(), item.getBaseName(), null);
         if (fishing != null) return customAsset(fishing);
         String hardware = HardwareIcons.resource(item.getType(), item.getBaseName(), null);
@@ -298,6 +356,7 @@ public final class MaterialIcons {
 
     private static Asset atlasAsset(short iconId, String descriptor) {
         String normalized = words(descriptor);
+        if (iconId == 940 && containsPhrase(normalized, "leather knife")) return null;
         if (iconId == 823 || iconId == 825) {
             String slug = lightingArtwork(iconId, descriptor);
             for (Asset candidate : ATLAS_ASSETS) {

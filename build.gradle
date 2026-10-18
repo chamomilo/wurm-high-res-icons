@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.wurmhighres'
-version = '0.2.5'
+version = '0.2.13'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -66,6 +66,7 @@ test {
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.FAIL
     archiveFileName = "wurm-highres-${project.version}.jar"
     into('META-INF/licenses/wurm-highres') {
         from 'LICENSE', 'lgpl-3.0.txt'
@@ -73,6 +74,7 @@ jar {
 }
 
 task resourcePack(type: Jar) {
+    duplicatesStrategy = DuplicatesStrategy.FAIL
     archiveFileName = "wurm-highres-resources-${project.version}.jar"
     destinationDirectory = file("${buildDir}/resource-pack")
     from('resource-pack')
@@ -91,6 +93,9 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'org/wurmhighres/client/CookwareIcons.class',
                 'org/wurmhighres/client/HardwareIcons.class',
                 'org/wurmhighres/client/FishingIcons.class',
+                'org/wurmhighres/client/ToolPartIcons.class',
+                'org/wurmhighres/client/CuttingToolIcons.class',
+                'org/wurmhighres/client/WorkshopIcons.class',
                 'org/wurmhighres/client/ModSettingsSchema.class',
                 'org/wurmhighres/client/MaterialIcons.class',
                 'org/wurmhighres/client/ShieldIcons.class',
@@ -152,7 +157,61 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
             }
         } finally { modZip.close() }
 
+        // Verify every source resource, including newly added icons and masks.
+        [[jar, 'src/main/resources'], [resourcePack, 'resource-pack']].each { spec ->
+            def archive = new java.util.zip.ZipFile(spec[0].archiveFile.get().asFile)
+            try {
+                def names = archive.entries().findAll { !it.directory }.collect { it.name }
+                if (names.size() != names.toSet().size()) {
+                    throw new GradleException('Duplicate JAR entries: ' + spec[0].name)
+                }
+                def tree = fileTree(spec[1])
+                tree.visit { source ->
+                    if (!source.directory) {
+                        def name = source.relativePath.pathString
+                        def entry = archive.getEntry(name)
+                        if (entry == null || !java.util.Arrays.equals(
+                                archive.getInputStream(entry).bytes, source.file.bytes)) {
+                            throw new GradleException('Missing or changed packaged resource: ' + name)
+                        }
+                    }
+                }
+                logger.lifecycle('Verified every source resource in ' + spec[0].archiveFileName.get())
+                if (spec[0] == resourcePack) {
+                    def mappings = new Properties()
+                    mappings.load(new java.io.StringReader(file('resource-pack/mappings.txt').getText('UTF-8')))
+                    mappings.each { key, target ->
+                        if (archive.getEntry(target.toString()) == null) {
+                            throw new GradleException('Missing mapped image: ' + key + ' = ' + target)
+                        }
+                    }
+                    def pngs = names.findAll { it.endsWith('.png') }
+                    pngs.each { name ->
+                        def stream = archive.getInputStream(archive.getEntry(name))
+                        try {
+                            def image = javax.imageio.ImageIO.read(stream)
+                            if (image == null || (name.startsWith('gui/custom/') &&
+                                    (image.width != 32 || image.height != 32 ||
+                                            (!name.endsWith('-mask.png') && !image.colorModel.hasAlpha())))) {
+                                throw new GradleException('Invalid runtime image: ' + name)
+                            }
+                        } finally { stream.close() }
+                    }
+                    logger.lifecycle('Verified ' + pngs.size() + ' runtime PNGs and all mapped image paths')
+                }
+            } finally { archive.close() }
+        }
+
         def materialIconSlugs = [
+                'leather-knife',
+                'chisel-blade', 'leather-knife-blade', 'mallet-head', 'hammer-head',
+                'pickaxe-head', 'rake-blade', 'shovel-blade', 'shovel-blade-wood',
+                'old-fishing-hook', 'wooden-fishing-hook', 'fishing-rod',
+                'wood-reel', 'metal-reel', 'professional-reel',
+                'light-fishing-reel', 'medium-fishing-reel',
+                'deep-water-fishing-reel', 'professional-fishing-reel',
+                'old-fine-fishing-line', 'old-fishing-line', 'metal-fishing-hook',
+                'old-fine-fishing-rod', 'old-unstrung-fishing-rod', 'old-fishing-rod', 'fishing-pole',
                 'old-fine-fishing-hook',
                 'small-lock', 'large-lock', 'hooks', 'eyelet',
                 'large-nails', 'small-nails', 'key', 'lock-picks', 'rivets',
@@ -226,6 +285,21 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
              'gui/custom/hooks.png', 'gui/custom/eyelet.png',
              'gui/custom/fish-keep-net.png', 'gui/custom/modern-fishing-line.png',
              'gui/custom/old-fine-fishing-hook.png',
+             'gui/custom/old-fine-fishing-line.png', 'gui/custom/old-fishing-line.png',
+             'gui/custom/metal-fishing-hook.png', 'gui/custom/old-fine-fishing-rod.png',
+             'gui/custom/old-unstrung-fishing-rod.png', 'gui/custom/old-fishing-rod.png',
+             'gui/custom/fishing-pole.png',
+             'gui/custom/leather-knife.png', 'gui/custom/stone-chisel.png',
+             'gui/custom/chisel-blade.png', 'gui/custom/leather-knife-blade.png',
+             'gui/custom/mallet-head.png', 'gui/custom/hammer-head.png',
+             'gui/custom/pickaxe-head.png', 'gui/custom/rake-blade.png', 'gui/custom/shovel-blade.png',
+             'gui/custom/shovel-blade-wood.png',
+             'gui/custom/old-fishing-hook.png', 'gui/custom/wooden-fishing-hook.png',
+             'gui/custom/fishing-rod.png', 'gui/custom/bone-fishing-hook.png',
+             'gui/custom/fishing-net.png', 'gui/custom/wood-reel.png',
+             'gui/custom/metal-reel.png', 'gui/custom/professional-reel.png',
+             'gui/custom/light-fishing-reel.png', 'gui/custom/medium-fishing-reel.png',
+             'gui/custom/deep-water-fishing-reel.png', 'gui/custom/professional-fishing-reel.png',
              'gui/tools.png', 'gui/weapons.png',
              'gui/custom/carving-knife.png',
              'gui/custom/prayer-charm.png',

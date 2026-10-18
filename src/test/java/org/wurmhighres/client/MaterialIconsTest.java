@@ -19,6 +19,120 @@ import static org.junit.Assert.assertTrue;
 
 public class MaterialIconsTest {
     @Test
+    public void cuttingToolsDoNotReuseTheOrdinaryKnifeArtwork() throws Exception {
+        assertEquals("img.wurmhighres.material.knife", MaterialIcons.inventoryBaseResource(item(940, "knife", 11)));
+        InventoryMetaItem leatherKnife = item(766, "leather knife", 11);
+        set(leatherKnife, "customName", "knife");
+        assertEquals("img.wurmhighres.material.leather.knife", MaterialIcons.inventoryBaseResource(leatherKnife));
+        assertEquals("img.wurmhighres.material.leather.knife",
+                MaterialIcons.inventoryBaseResource(item(1600, "Rare leather knife, seryll", 67)));
+        assertEquals("img.wurmhighres.material.stone.chisel",
+                MaterialIcons.inventoryBaseResource(item(1201, "stone chisel", 11)));
+        assertEquals("img.wurmhighres.material.leather.knife.blade",
+                MaterialIcons.inventoryBaseResource(item(720, "leather knife head", 11)));
+        assertFalse(MaterialIcons.recognizes((short) 940, "leather knife, iron"));
+    }
+
+    @Test
+    public void leatherKnifeMaskPreservesWoodAndLeatherWhileTintingBladeAndRivet() throws Exception {
+        File directory = new File(projectDirectory(), "resource-pack/gui/custom/materials");
+        BufferedImage base = ImageIO.read(new File(directory, "leather-knife.png"));
+        BufferedImage mask = ImageIO.read(new File(directory, "leather-knife-mask.png"));
+        BufferedImage tinted = ShieldIcons.tint(base, mask, .3f, 1.2f, .6f);
+        for (int[] xy : new int[][]{{25, 10}, {18, 13}}) {
+            assertTrue((base.getRGB(xy[0], xy[1]) >>> 24) >= 200);
+            assertTrue(((mask.getRGB(xy[0], xy[1]) >>> 16) & 255) >= 200);
+            assertTrue(base.getRGB(xy[0], xy[1]) != tinted.getRGB(xy[0], xy[1]));
+        }
+        for (int[] xy : new int[][]{{17, 14}, {10, 19}}) {
+            assertTrue((base.getRGB(xy[0], xy[1]) >>> 24) >= 200);
+            assertEquals(0, (mask.getRGB(xy[0], xy[1]) >>> 16) & 255);
+            assertEquals(base.getRGB(xy[0], xy[1]), tinted.getRGB(xy[0], xy[1]));
+        }
+    }
+
+    @Test
+    public void toolPartInventorySelectsAllSevenPartsAndBothShovelMaterials() throws Exception {
+        Object[][] cases = {
+                {720, "chisel blade", 11, "chisel.blade"},
+                {720, "leather knife blade", 67, "leather.knife.blade"},
+                {721, "mallet head", 14, "mallet.head"},
+                {722, "hammer head", 11, "hammer.head"},
+                {723, "pickaxe head", 9, "pickaxe.head"},
+                {725, "rake blade", 11, "rake.blade"},
+                {726, "shovel blade", 11, "shovel.blade"},
+                {726, "shovel blade", 14, "shovel.blade.wood"}
+        };
+        for (Object[] value : cases) {
+            InventoryMetaItem item = item((Integer) value[0], "Rare " + value[1], (Integer) value[2]);
+            set(item, "customName", "pickaxe");
+            set(item, "hoverText", "leather knife");
+            assertEquals("img.wurmhighres.material." + value[3], MaterialIcons.inventoryBaseResource(item));
+            assertEquals("img.wurmhighres.material." + value[3],
+                    MaterialIcons.inventoryBaseResource(item(1600, "Rare " + value[1], (Integer) value[2])));
+        }
+    }
+
+    @Test
+    public void woodenShovelRetainsWarmWoodAndMetalShovelHasANeutralBase() throws Exception {
+        File directory = new File(projectDirectory(), "resource-pack/gui/custom/materials");
+        BufferedImage wood = ImageIO.read(new File(directory, "shovel-blade-wood.png"));
+        BufferedImage metal = ImageIO.read(new File(directory, "shovel-blade.png"));
+        int woodenPixel = wood.getRGB(16, 16), metalPixel = metal.getRGB(16, 16);
+        assertTrue((woodenPixel >>> 24) > 200);
+        assertTrue((metalPixel >>> 24) > 200);
+        assertTrue(((woodenPixel >>> 16) & 255) > ((woodenPixel >>> 8) & 255));
+        assertTrue(((woodenPixel >>> 8) & 255) > (woodenPixel & 255));
+        assertEquals((metalPixel >>> 16) & 255, metalPixel & 255);
+    }
+
+    @Test
+    public void remainingFishingInventoryUsesTheCorrectWoodAndMetalArt() throws Exception {
+        Object[][] cases = {
+                {805, "old fishing hook", 14}, {805, "wooden fishing hook", 14},
+                {846, "fishing rod", 14}, {1494, "wood reel", 14},
+                {1494, "metal reel", 11}, {1494, "professional reel", 9},
+                {1495, "light fishing reel", 14}, {1496, "medium fishing reel", 14},
+                {1497, "deep water fishing reel", 11}, {1498, "professional fishing reel", 9}
+        };
+        for (Object[] value : cases) {
+            InventoryMetaItem item = item((Integer) value[0], "Rare " + value[1], (Integer) value[2]);
+            set(item, "customName", "fishing net");
+            assertEquals("img.wurmhighres.material." + ((String) value[1]).replace(' ', '.'),
+                    MaterialIcons.inventoryBaseResource(item));
+        }
+        assertNull(MaterialIcons.inventoryBaseResource(item(865, "bone fishing hook", 35)));
+        assertNull(MaterialIcons.inventoryBaseResource(item(885, "fishing net", 17)));
+    }
+
+    @Test
+    public void assembledReelMasksPreserveCottonAndLeather() throws Exception {
+        File directory = new File(projectDirectory(), "resource-pack/gui/custom/materials");
+        for (String slug : new String[]{"light-fishing-reel", "medium-fishing-reel",
+                "deep-water-fishing-reel", "professional-fishing-reel"}) {
+            BufferedImage base = ImageIO.read(new File(directory, slug + ".png"));
+            BufferedImage mask = ImageIO.read(new File(directory, slug + "-mask.png"));
+            BufferedImage tinted = ShieldIcons.tint(base, mask, .3f, 1.2f, .6f);
+            // Independently chosen artwork landmarks: upper flange, cotton,
+            // and the grip, whose material differs between reel types.
+            assertTrue(slug + " flange missing", (base.getRGB(16, 14) >>> 24) > 200);
+            assertEquals(slug + " flange not selected", 255, (mask.getRGB(16, 14) >>> 16) & 255);
+            assertTrue(slug + " flange unchanged", base.getRGB(16, 14) != tinted.getRGB(16, 14));
+            assertTrue(slug + " cotton missing", (base.getRGB(16, 23) >>> 24) > 200);
+            assertEquals(slug + " cotton selected", 0, (mask.getRGB(16, 23) >>> 16) & 255);
+            assertEquals(slug + " cotton tinted", base.getRGB(16, 23), tinted.getRGB(16, 23));
+            assertTrue(slug + " grip missing", (base.getRGB(6, 6) >>> 24) > 200);
+            if (slug.equals("light-fishing-reel")) {
+                assertEquals(255, (mask.getRGB(6, 6) >>> 16) & 255);
+                assertTrue(base.getRGB(6, 6) != tinted.getRGB(6, 6));
+            } else {
+                assertEquals(slug + " leather selected", 0, (mask.getRGB(6, 6) >>> 16) & 255);
+                assertEquals(slug + " leather tinted", base.getRGB(6, 6), tinted.getRGB(6, 6));
+            }
+        }
+    }
+
+    @Test
     public void buoyWoodTintKeepsLanternAndHoopsUntouched() throws Exception {
         File directory = new File(projectDirectory(), "resource-pack/gui/custom/materials");
         BufferedImage base = ImageIO.read(new File(directory, "buoy.png"));
@@ -35,6 +149,13 @@ public class MaterialIconsTest {
     }
 
     private static final String[] SLUGS = {
+            "leather-knife",
+            "chisel-blade", "leather-knife-blade", "scissor-blade", "file-blade", "trowel-blade", "sickle-blade", "scythe-blade", "awl-blade", "butchering-knife-blade", "archery-target", "practice-doll", "carving-knife-blade", "short-sword-blade", "short-sword", "hatchet-head", "small-axe-head", "medium-axe-head", "small-maul-head", "medium-maul-head", "small-maul", "medium-maul", "short-bow", "short-bow-unstrung", "war-arrow", "war-arrow-head", "spear-tip", "mallet-head", "hammer-head",
+            "pickaxe-head", "rake-blade", "shovel-blade", "shovel-blade-wood",
+            "old-fishing-hook", "wooden-fishing-hook", "fishing-rod", "wood-reel", "metal-reel", "professional-reel",
+            "light-fishing-reel", "medium-fishing-reel", "deep-water-fishing-reel", "professional-fishing-reel",
+            "old-fine-fishing-line", "old-fishing-line", "metal-fishing-hook",
+            "old-fine-fishing-rod", "old-unstrung-fishing-rod", "old-fishing-rod", "fishing-pole",
             "old-fine-fishing-hook",
             "small-lock", "large-lock", "hooks", "eyelet",
             "large-nails", "small-nails", "key", "lock-picks", "rivets",
@@ -53,6 +174,52 @@ public class MaterialIconsTest {
             "huge-oil-barrel", "wine-barrel", "press", "large-anvil",
             "prayer-charm", "carving-knife"
     };
+
+    @Test
+    public void oldFishingInventoryUsesEachExactTypeAndItsMaterialFamily() throws Exception {
+        Object[][] cases = {
+                {785, "old fine fishing line", 11, "old.fine.fishing.line"},
+                {785, "old fishing line", 14, "old.fishing.line"},
+                {785, "metal fishing hook", 67, "metal.fishing.hook"},
+                {786, "old fine fishing rod", 14, "old.fine.fishing.rod"},
+                {786, "old unstrung fishing rod", 14, "old.unstrung.fishing.rod"},
+                {786, "old fishing rod", 14, "old.fishing.rod"},
+                {786, "fishing pole", 14, "fishing.pole"}
+        };
+        for (Object[] value : cases) {
+            InventoryMetaItem item = item((Integer) value[0], "Rare " + value[1], (Integer) value[2]);
+            set(item, "customName", "old fine fishing hook");
+            set(item, "hoverText", "fishing pole gold");
+            assertEquals("img.wurmhighres.material." + value[3], MaterialIcons.inventoryBaseResource(item));
+        }
+    }
+
+    @Test
+    public void fishingMasksTintHooksAndWoodWithoutTintingOtherRigParts() throws Exception {
+        // Independent artwork landmarks: a material point and cotton/stone/iron
+        // point. These guard the content of masks rather than their generator.
+        Object[][] cases = {
+                {"old-fine-fishing-line", 25, 22, 14, 2},
+                {"old-fishing-line", 23, 28, 28, 16},
+                {"old-fine-fishing-rod", 12, 18, 23, 26},
+                {"old-fishing-rod", 12, 13, 21, 8}
+        };
+        File directory = new File(projectDirectory(), "resource-pack/gui/custom/materials");
+        for (Object[] value : cases) {
+            String slug = (String) value[0];
+            BufferedImage base = ImageIO.read(new File(directory, slug + ".png"));
+            BufferedImage mask = ImageIO.read(new File(directory, slug + "-mask.png"));
+            BufferedImage tinted = ShieldIcons.tint(base, mask, .3f, 1.2f, .6f);
+            int x = (Integer) value[1], y = (Integer) value[2];
+            assertTrue(slug + " missing material landmark", (base.getRGB(x, y) >>> 24) >= 64);
+            assertTrue(slug + " mask misses material", ((mask.getRGB(x, y) >>> 16) & 255) > 180);
+            assertTrue(slug + " material unchanged", base.getRGB(x, y) != tinted.getRGB(x, y));
+            x = (Integer) value[3]; y = (Integer) value[4];
+            assertTrue(slug + " missing protected landmark", (base.getRGB(x, y) >>> 24) >= 64);
+            assertEquals(slug + " other component selected", 0, (mask.getRGB(x, y) >>> 16) & 255);
+            assertEquals(slug + " other component tinted", base.getRGB(x, y), tinted.getRGB(x, y));
+        }
+    }
 
     @Test
     public void resolvesRedesignedItemsWithoutCatchingSharedAtlasNeighbours() {
@@ -102,7 +269,8 @@ public class MaterialIconsTest {
                 MaterialIcons.inventoryBaseResource(item(785, "old fine fishing hook", 11)));
         assertNull(MaterialIcons.inventoryBaseResource(item(343, "fish keep net", 17)));
         assertNull(MaterialIcons.inventoryBaseResource(item(620, "basic fishing line", 17)));
-        assertNull(MaterialIcons.inventoryBaseResource(item(785, "metal fishing hook", 11)));
+        assertEquals("img.wurmhighres.material.metal.fishing.hook",
+                MaterialIcons.inventoryBaseResource(item(785, "metal fishing hook", 11)));
     }
 
     @Test
@@ -116,7 +284,8 @@ public class MaterialIconsTest {
                 MaterialIcons.inventoryBaseResource(item(1601, "shovel, seryll", 67)));
         assertEquals("img.wurmhighres.material.pickaxe",
                 MaterialIcons.inventoryBaseResource(item(743, "pickaxe", 67)));
-        assertNull(MaterialIcons.inventoryBaseResource(item(1600, "pickaxe head", 67)));
+        assertEquals("img.wurmhighres.material.pickaxe.head",
+                MaterialIcons.inventoryBaseResource(item(1600, "pickaxe head", 67)));
         assertNull(MaterialIcons.inventoryBaseResource(item(1600, "pickaxe fragment", 67)));
         assertNull(MaterialIcons.inventoryBaseResource(item(1600, "a statue of a pickaxe", 67)));
         assertNull(MaterialIcons.inventoryBaseResource(item(1600, "pickaxe", 38)));
@@ -139,7 +308,7 @@ public class MaterialIconsTest {
                 {282, "statuette", "praying-statuette"}, {520, "chain", "chain"},
                 {755, "butchering knife", "butchering-knife"}, {767, "fork", "fork"},
                 {768, "spoon", "spoon"}, {754, "awl", "awl"},
-                {882, "metal brush", "metal-brush"}, {940, "leather knife", "knife"},
+                {882, "metal brush", "metal-brush"}, {940, "knife", "knife"}, {766, "leather knife", "leather-knife"},
                 {1201, "stone chisel", "stone-chisel"}, {738, "crowbar", "crowbar"},
                 {742, "hammer", "hammer"}, {743, "pickaxe", "pickaxe"},
                 {745, "rake", "rake"}, {746, "shovel", "shovel"}, {747, "saw", "saw"},
@@ -176,7 +345,8 @@ public class MaterialIconsTest {
                 }
             }
         }
-        assertNull(MaterialIcons.inventoryBaseResource(item(1600, "carving knife blade", 67)));
+        assertEquals("img.wurmhighres.material.carving.knife.blade",
+                MaterialIcons.inventoryBaseResource(item(1600, "carving knife blade", 67)));
         assertNull(MaterialIcons.inventoryBaseResource(item(1600, "Rare branding iron fragment", 67)));
     }
 
@@ -188,7 +358,7 @@ public class MaterialIconsTest {
                 {"butchering-knife", 23, 10, 17, 18, 7, 20},
                 {"awl", 24, 7, 17, 16, 9, 23},
                 {"metal-brush", 20, 6, 22, 6, 9, 21},
-                {"stone-chisel", 24, 11, 16, 16, 9, 19},
+                {"leather-knife", 25, 10, 18, 13, 10, 19},
                 {"hammer", 10, 6, 24, 16, 7, 24},
                 {"pickaxe", 5, 1, 28, 16, 6, 23},
                 {"rake", 5, 5, 31, 20, 8, 20},
@@ -196,7 +366,7 @@ public class MaterialIconsTest {
                 {"saw", 26, 6, 15, 19, 7, 25},
                 {"file", 25, 6, 13, 17, 8, 24},
                 {"trowel", 25, 4, 16, 18, 7, 25},
-                {"sickle", 9, 7, 30, 17, 3, 20},
+                {"sickle", 5, 6, 16, 15, 27, 23},
                 {"scythe", 19, 2, 28, 7, 12, 16},
                 {"hatchet", 12, 5, 25, 19, 8, 19},
                 {"carving-knife", 27, 6, 23, 11, 13, 20},
@@ -240,7 +410,9 @@ public class MaterialIconsTest {
         File directory = new File(projectDirectory(), "resource-pack/gui/custom/materials");
         float[] colour = ShieldIcons.fallbackColour(MaterialUtilities.getMaterialString((byte) 67));
         for (String slug : new String[]{"praying-statuette", "chain", "fork", "spoon", "knife",
-                "old-fine-fishing-hook",
+                "stone-chisel",
+                "old-fine-fishing-hook", "metal-fishing-hook", "metal-reel", "professional-reel",
+                "chisel-blade", "leather-knife-blade", "hammer-head", "pickaxe-head", "rake-blade", "shovel-blade",
                 "crowbar", "scissors", "pliers", "small-anvil", "needle", "branding-iron",
                 "smelting-pot", "prayer-charm", "bowl", "frying-pan", "sauce-pan", "cauldron"}) {
             BufferedImage base = ImageIO.read(new File(directory, slug + ".png"));
